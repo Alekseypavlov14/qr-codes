@@ -27,6 +27,9 @@ export class PrinterClassic implements IPrinter {
       const matrixSize = matrix.length
       const canvasSize = (matrixSize + 2 * this.config.paddingCells) * CELL_SIZE
 
+      canvas.width = canvasSize
+      canvas.height = canvasSize
+
       const canvasDrawer = new CanvasDrawer({
         context: context,
         width: canvasSize,
