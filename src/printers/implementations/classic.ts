@@ -46,7 +46,7 @@ export class PrinterClassic implements IPrinter {
 
       canvasDrawer.drawMatrix(matrixCoordinates, matrix, CELL_SIZE)
 
-      container.appendChild(canvas)
+      HTML_UTILS.insertElement(container, canvas)
     }
   }
   
