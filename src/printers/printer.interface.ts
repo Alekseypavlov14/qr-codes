@@ -1,11 +1,8 @@
-import { PrinterConfig } from './types/printer-config'
+import { Injector } from './types/injector'
 import { Matrix } from '../core/shared/types/matrix'
 
 export interface IPrinter {
-  new(config?: PrinterConfig): IPrinter
-
-  print(matrix: Matrix<number>): (selector: string) => void
-  
+  print(matrix: Matrix<number>): Injector
   setLightColor(color: string): void
   setDarkColor(color: string): void
 }

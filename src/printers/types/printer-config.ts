@@ -1,4 +1,6 @@
+import { Color } from './color'
+
 export interface PrinterConfig {
-  lightColor: string
-  darkColor: string
+  lightColor: Color
+  darkColor: Color
 }
