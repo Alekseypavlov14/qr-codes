@@ -25,6 +25,11 @@ export class HTMLUtils {
     return context
   }
 
+  getElementMinSize(element: HTMLElement) {
+    const { width, height } = element.getBoundingClientRect()
+    return Math.min(width, height)
+  }
+
   insertElement(container: HTMLElement, element: HTMLElement) {
     container.appendChild(element)
   }

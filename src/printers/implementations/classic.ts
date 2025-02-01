@@ -1,4 +1,4 @@
-import { CELL_SIZE, defaultPrinterConfig } from '../constants'
+import { defaultPrinterConfig, RESOLUTION_INCREASE_COEFFICIENT } from '../constants'
 import { normalizeConfig } from '../utils/config'
 import { PrinterConfig } from '../types/printer-config'
 import { CanvasDrawer } from '../utils/canvas'
@@ -20,13 +20,17 @@ export class PrinterClassic implements IPrinter {
   print(matrix: Matrix<number>): Injector {
     return (selector) => {
       const container = HTML_UTILS.select(selector)
+      const containerSize = HTML_UTILS.getElementMinSize(container)
 
       const canvas = HTML_UTILS.createCanvas()
       const context = HTML_UTILS.getCanvasContext(canvas)
 
       const matrixSize = matrix.length
-      const canvasSize = (matrixSize + 2 * this.config.paddingCells) * CELL_SIZE
+      const cellsAmount = matrixSize + 2 * this.config.paddingCells
 
+      const cellsSize = containerSize / cellsAmount * RESOLUTION_INCREASE_COEFFICIENT
+      const canvasSize = (matrixSize + 2 * this.config.paddingCells) * cellsSize
+      
       canvas.width = canvasSize
       canvas.height = canvasSize
 
@@ -44,10 +48,10 @@ export class PrinterClassic implements IPrinter {
 
       canvasDrawer.drawRectangle(backgroundCoordinate, backgroundSize, backgroundColor)
 
-      const matrixCoordinate = this.config.paddingCells * CELL_SIZE
+      const matrixCoordinate = this.config.paddingCells * cellsSize
       const matrixCoordinates = getPoint(matrixCoordinate, matrixCoordinate)
 
-      canvasDrawer.drawMatrix(matrixCoordinates, matrix, CELL_SIZE)
+      canvasDrawer.drawMatrix(matrixCoordinates, matrix, cellsSize)
 
       HTML_UTILS.insertElement(container, canvas)
     }
