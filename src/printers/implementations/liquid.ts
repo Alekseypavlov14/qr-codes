@@ -6,14 +6,13 @@ import { HTML_UTILS } from '../utils/html'
 import { getPoint } from '../../core/shared/utils/coordinates'
 import { IPrinter } from '../printer.interface'
 import { Injector } from '../types/injector'
-import { getSize } from '../../core/shared/utils/sizes'
 import { Matrix } from '../../core/shared/types/matrix'
 import { Color } from '../types/color'
 
 export class PrinterLiquid implements IPrinter {
   private readonly config: Required<PrinterConfig>
 
-  constructor(config: PrinterConfig = defaultPrinterConfig) {
+  constructor(config: Partial<PrinterConfig> = defaultPrinterConfig) {
     this.config = normalizeConfig(config)
   }
 
