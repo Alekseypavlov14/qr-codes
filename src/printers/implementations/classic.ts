@@ -1,12 +1,14 @@
 import { CANVAS_CONTENT_ERROR, CONTAINER_IS_NOT_FOUND_ERROR } from '../errors'
-import { defaultPrinterConfig } from '../constants'
+import { CELL_SIZE, defaultPrinterConfig } from '../constants'
 import { normalizeConfig } from '../utils/config'
 import { PrinterConfig } from '../types/printer-config'
+import { CanvasDrawer } from '../utils/canvas'
+import { getPoint } from '../../core/shared/utils/coordinates'
 import { IPrinter } from '../printer.interface'
 import { Injector } from '../types/injector'
+import { getSize } from '../../core/shared/utils/sizes'
 import { Matrix } from '../../core/shared/types/matrix'
 import { Color } from '../types/color'
-import { BLACK } from '../../core/shared/constants'
 
 export class PrinterClassic implements IPrinter {
   private readonly config: Required<PrinterConfig>
@@ -18,7 +20,6 @@ export class PrinterClassic implements IPrinter {
   print(matrix: Matrix<number>): Injector {
     return (selector) => {
       const element = document.querySelector(selector)
-
       if (!element || !(element instanceof HTMLElement)) throw CONTAINER_IS_NOT_FOUND_ERROR
 
       const canvas = document.createElement("canvas")
@@ -26,26 +27,27 @@ export class PrinterClassic implements IPrinter {
 
       if (!context) throw CANVAS_CONTENT_ERROR
 
-      const cellSize = 10
       const matrixSize = matrix.length
+      const canvasSize = (matrixSize + 2 * this.config.paddingCells) * CELL_SIZE
 
-      canvas.width = matrixSize * cellSize
-      canvas.height = matrixSize * cellSize
+      const canvasDrawer = new CanvasDrawer({
+        context: context,
+        width: canvasSize,
+        height: canvasSize,
+        lightColor: this.config.lightColor,
+        darkColor: this.config.darkColor
+      })
 
-      context.fillStyle = this.config.lightColor
-      context.fillRect(0, 0, canvas.width, canvas.height)
+      const backgroundCoordinate = getPoint(0, 0)
+      const backgroundSize = getSize(canvasSize, canvasSize)
+      const backgroundColor = this.config.lightColor
 
-      for (let row = 0; row < matrixSize; row++) {
-        for (let col = 0; col < matrixSize; col++) {
-          context.fillStyle = matrix[row][col] === BLACK ? this.config.darkColor : this.config.lightColor
-          context.fillRect(
-            col * cellSize,
-            row * cellSize,
-            cellSize,
-            cellSize
-          )
-        }
-      }
+      canvasDrawer.drawRectangle(backgroundCoordinate, backgroundSize, backgroundColor)
+
+      const matrixCoordinate = this.config.paddingCells * CELL_SIZE
+      const matrixCoordinates = getPoint(matrixCoordinate, matrixCoordinate)
+
+      canvasDrawer.drawMatrix(matrixCoordinates, matrix, CELL_SIZE)
 
       element.appendChild(canvas)
     }
