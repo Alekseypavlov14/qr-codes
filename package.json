@@ -1,0 +1,24 @@
+{
+  "name": "@oleksii-pavlov/qr-codes",
+  "version": "1.0.0",
+  "description": "QR Code generator",
+  "main": "./build/index.js",
+  "scripts": {
+    "prepublishOnly": "npm run build",
+    "build": "tsc"
+  },
+  "keywords": [
+    "QR Code generator",
+    "QR Code",
+    "qr",
+    "code"
+  ],
+  "author": "Oleksii Pavlov <aleshapavlov9@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@oleksii-pavlov/ranges": "^1.1.0"
+  }
+}
