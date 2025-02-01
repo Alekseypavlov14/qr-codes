@@ -29,9 +29,74 @@ export class CanvasDrawer {
     }
   }
 
+  drawMatrixWithCircles(coordinates: Coordinates, matrix: Matrix<number>, diameter: number) {
+    for (let row = 0; row < matrix.length; row++) {
+      for (let column = 0; column < matrix[0].length; column++) {
+        const fillColor = matrix[row][column] === BLACK
+          ? this.config.darkColor
+          : this.config.lightColor
+
+        const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
+
+        this.drawCircle(coordinate, diameter, fillColor)
+      }
+    }
+  }
+
+  connectConsecutiveCircles(coordinates: Coordinates, matrix: Matrix<number>, diameter: number) {
+    for (let row = 0; row < matrix.length; row++) {
+      for (let column = 0; column < matrix[0].length; column++) {
+        const module = matrix[row][column]
+        if (module !== BLACK) continue
+
+        // compare with top => fill top half
+        const topModule = matrix?.[row - 1]?.[column]
+        if (topModule === BLACK) {
+          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
+          this.drawRectangle(coordinate, getSize(diameter, diameter / 2), this.config.darkColor)
+        }
+
+        // compare with right => fill right half
+        const rightModule = matrix?.[row]?.[column + 1]
+        if (rightModule === BLACK) {
+          const coordinate = getPoint(column * diameter + diameter / 2 + coordinates.x, row * diameter + coordinates.y)
+          this.drawRectangle(coordinate, getSize(diameter / 2, diameter), this.config.darkColor)
+        }
+
+        // compare with bottom => fill bottom half
+        const bottomModule = matrix?.[row + 1]?.[column]
+        if (bottomModule === BLACK) {
+          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + diameter / 2 + coordinates.y)
+          this.drawRectangle(coordinate, getSize(diameter, diameter / 2), this.config.darkColor)
+        }
+
+        // compare with left => fill left half
+        const leftModule = matrix?.[row]?.[column - 1]
+        if (leftModule === BLACK) {
+          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
+          this.drawRectangle(coordinate, getSize(diameter / 2, diameter), this.config.darkColor)
+        }
+      }
+    }
+  }
+
   drawRectangle(coordinates: Coordinates, size: Size, color: Color) {
     this.config.context.fillStyle = color
     this.config.context.rect(coordinates.x, coordinates.y, size.width, size.height)
     this.config.context.fillRect(coordinates.x, coordinates.y, size.width, size.height)
+  }
+
+  drawCircle(coordinates: Coordinates, diameter: number, color: Color) {
+    this.config.context.fillStyle = color
+
+    this.config.context.beginPath()
+    this.config.context.arc(coordinates.x + diameter / 2, coordinates.y + diameter / 2, diameter / 2, 0, Math.PI * 2)
+    this.config.context.fill()
+  }
+
+  fillBackground(color: Color) {
+    const backgroundCoordinate = getPoint(0, 0)
+    const backgroundSize = getSize(this.config.width, this.config.height)
+    this.drawRectangle(backgroundCoordinate, backgroundSize, color)
   }
 }

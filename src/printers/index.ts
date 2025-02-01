@@ -1,4 +1,5 @@
 export * from './implementations/classic'
+export * from './implementations/liquid'
 export * from './printer.interface'
 
 export * from './types/printer-config'

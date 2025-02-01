@@ -10,7 +10,7 @@ import { getSize } from '../../core/shared/utils/sizes'
 import { Matrix } from '../../core/shared/types/matrix'
 import { Color } from '../types/color'
 
-export class PrinterClassic implements IPrinter {
+export class PrinterLiquid implements IPrinter {
   private readonly config: Required<PrinterConfig>
 
   constructor(config: PrinterConfig = defaultPrinterConfig) {
@@ -47,7 +47,8 @@ export class PrinterClassic implements IPrinter {
       const matrixCoordinate = this.config.paddingCells * cellsSize
       const matrixCoordinates = getPoint(matrixCoordinate, matrixCoordinate)
 
-      canvasDrawer.drawMatrix(matrixCoordinates, matrix, cellsSize)
+      canvasDrawer.drawMatrixWithCircles(matrixCoordinates, matrix, cellsSize)
+      canvasDrawer.connectConsecutiveCircles(matrixCoordinates, matrix, cellsSize)
 
       HTML_UTILS.insertElement(container, canvas)
     }
