@@ -1,8 +1,8 @@
-import { CANVAS_CONTENT_ERROR, CONTAINER_IS_NOT_FOUND_ERROR } from '../errors'
 import { CELL_SIZE, defaultPrinterConfig } from '../constants'
 import { normalizeConfig } from '../utils/config'
 import { PrinterConfig } from '../types/printer-config'
 import { CanvasDrawer } from '../utils/canvas'
+import { HTML_UTILS } from '../utils/html'
 import { getPoint } from '../../core/shared/utils/coordinates'
 import { IPrinter } from '../printer.interface'
 import { Injector } from '../types/injector'
@@ -19,13 +19,10 @@ export class PrinterClassic implements IPrinter {
 
   print(matrix: Matrix<number>): Injector {
     return (selector) => {
-      const element = document.querySelector(selector)
-      if (!element || !(element instanceof HTMLElement)) throw CONTAINER_IS_NOT_FOUND_ERROR
+      const container = HTML_UTILS.select(selector)
 
-      const canvas = document.createElement("canvas")
-      const context = canvas.getContext("2d")
-
-      if (!context) throw CANVAS_CONTENT_ERROR
+      const canvas = HTML_UTILS.createCanvas()
+      const context = HTML_UTILS.getCanvasContext(canvas)
 
       const matrixSize = matrix.length
       const canvasSize = (matrixSize + 2 * this.config.paddingCells) * CELL_SIZE
@@ -49,7 +46,7 @@ export class PrinterClassic implements IPrinter {
 
       canvasDrawer.drawMatrix(matrixCoordinates, matrix, CELL_SIZE)
 
-      element.appendChild(canvas)
+      container.appendChild(canvas)
     }
   }
   
