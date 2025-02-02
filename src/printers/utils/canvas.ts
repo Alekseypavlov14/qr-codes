@@ -85,6 +85,9 @@ export class CanvasDrawer {
     
     for (let row = 0; row < matrix.length; row++) {
       for (let column = 0; column < matrix[0].length; column++) {
+        const module = matrix[row][column]
+        if (module !== value) continue
+
         if (
           row !== minCoordinate && row !== maxCoordinate && 
           column !== minCoordinate && column !== maxCoordinate
