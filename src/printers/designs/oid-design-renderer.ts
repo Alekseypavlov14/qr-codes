@@ -14,7 +14,7 @@ export class OilDesignRenderer implements DesignRenderer {
     
     const matrixCoordinate = printerConfig.paddingCells * canvasConfig.cellSize
     const matrixCoordinates = getPoint(matrixCoordinate, matrixCoordinate)
-    const matrixSize = getSize(content[0].length, content.length)
+    const matrixSize = getSize(content[0].length * canvasConfig.cellSize, content.length * canvasConfig.cellSize)
     
     canvasDrawer.drawRectangle(matrixCoordinates, matrixSize, printerConfig.darkColor)
     canvasDrawer.drawMatrixWithCircles(matrixCoordinates, content, WHITE, printerConfig.lightColor)
