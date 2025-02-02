@@ -3,8 +3,8 @@ import { PrinterConfig } from '../types/printer-config'
 import { BLACK, WHITE } from '../../core/shared/constants'
 import { CanvasDrawer } from '../utils/canvas'
 import { getPoint } from '../../core/shared/utils/coordinates'
-import { Matrix } from '../../core/shared/types/matrix'
 import { getSize } from '../../core/shared/utils/sizes'
+import { Matrix } from '../../core/shared/types/matrix'
 
 export class OilDesignRenderer implements DesignRenderer {
   print(printerConfig: Required<PrinterConfig>, canvasDrawer: CanvasDrawer, content: Matrix<number>): void {
@@ -19,6 +19,6 @@ export class OilDesignRenderer implements DesignRenderer {
     canvasDrawer.drawRectangle(matrixCoordinates, matrixSize, printerConfig.darkColor)
     canvasDrawer.drawMatrixWithCircles(matrixCoordinates, content, WHITE, printerConfig.lightColor)
     canvasDrawer.connectConsecutiveCircles(matrixCoordinates, content, WHITE, printerConfig.lightColor)
-    canvasDrawer.roundCorners(matrixCoordinates, content, BLACK, printerConfig.darkColor, printerConfig.lightColor)
+    // canvasDrawer.roundCorners(matrixCoordinates, content, BLACK, printerConfig.darkColor, printerConfig.lightColor)
   }
 }
