@@ -9,5 +9,6 @@ export * from './types/color'
 
 export {
   designClassic,
-  designLiquid
+  designLiquid,
+  designOil
 } from './constants'

@@ -1,1 +1,1 @@
-export type Design = 'classic' | 'liquid'
+export type Design = 'classic' | 'liquid' | 'oil'

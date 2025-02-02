@@ -1,5 +1,6 @@
 import { ClassicDesignRenderer } from './designs/classic-design-renderer'
 import { LiquidDesignRenderer } from './designs/liquid-design-renderer'
+import { OilDesignRenderer } from './designs/oid-design-renderer'
 import { DesignRenderer } from './types/design-renderer'
 import { PrinterConfig } from './types/printer-config'
 import { Design } from './types/design'
@@ -13,6 +14,7 @@ export const WHITE_COLOR: Color = '#fff'
 
 export const designClassic: Design = 'classic'
 export const designLiquid: Design = 'liquid'
+export const designOil: Design = 'oil'
 
 export const defaultPrinterConfig: PrinterConfig = {
   paddingCells: DEFAULT_PADDING_CELLS,
@@ -24,5 +26,6 @@ export const defaultPrinterConfig: PrinterConfig = {
 export const mapDesignToRenderer: Record<Design, DesignRenderer> = {
   [designClassic]: new ClassicDesignRenderer(),
   [designLiquid]: new LiquidDesignRenderer(),
+  [designOil]: new OilDesignRenderer(),
 } as Record<Design, DesignRenderer>
 
