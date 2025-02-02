@@ -1,6 +1,6 @@
 {
   "name": "@oleksii-pavlov/qr-codes",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "QR Code generator",
   "main": "./build/index.js",
   "scripts": {
