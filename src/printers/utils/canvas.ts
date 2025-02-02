@@ -78,7 +78,7 @@ export class CanvasDrawer {
     }
   }
 
-  roundCorners(coordinates: Coordinates, matrix: Matrix<number>, value: Module, color: Color) {
+  roundCorners(coordinates: Coordinates, matrix: Matrix<number>, value: Module, moduleColor: Color, roundColor: Color) {
     const diameter = this.config.cellSize
 
     for (let row = 0; row < matrix.length; row++) {
@@ -106,25 +106,25 @@ export class CanvasDrawer {
 
         if (isSurroundedByOppositeColorFromTopRight) {
           const coordinate = getPoint(column * diameter + diameter / 2 + coordinates.x, row * diameter + coordinates.y)
-          this.drawRectangle(coordinate, cornerRectangleSize, color)
+          this.drawRectangle(coordinate, cornerRectangleSize, roundColor)
         }
 
         if (isSurroundedByOppositeColorFromBottomRight) {
           const coordinate = getPoint(column * diameter + diameter / 2 + coordinates.x, row * diameter + diameter / 2 + coordinates.y)
-          this.drawRectangle(coordinate, cornerRectangleSize, color)
+          this.drawRectangle(coordinate, cornerRectangleSize, roundColor)
         }
 
         if (isSurroundedByOppositeColorFromBottomLeft) {
           const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + diameter / 2 + coordinates.y)
-          this.drawRectangle(coordinate, cornerRectangleSize, color)
+          this.drawRectangle(coordinate, cornerRectangleSize, roundColor)
         }
 
         if (isSurroundedByOppositeColorFromTopLeft) {
           const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
-          this.drawRectangle(coordinate, cornerRectangleSize, color)
+          this.drawRectangle(coordinate, cornerRectangleSize, roundColor)
         }
 
-        this.drawCircle(circleCoordinate, diameter, color)
+        this.drawCircle(circleCoordinate, diameter, moduleColor)
       }
     }
   }
