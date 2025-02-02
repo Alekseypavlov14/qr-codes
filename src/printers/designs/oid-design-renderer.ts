@@ -19,6 +19,7 @@ export class OilDesignRenderer implements DesignRenderer {
     canvasDrawer.drawRectangle(matrixCoordinates, matrixSize, printerConfig.darkColor)
     canvasDrawer.drawMatrixWithCircles(matrixCoordinates, content, WHITE, printerConfig.lightColor)
     canvasDrawer.connectConsecutiveCircles(matrixCoordinates, content, WHITE, printerConfig.lightColor)
-    // canvasDrawer.roundCorners(matrixCoordinates, content, BLACK, printerConfig.darkColor, printerConfig.lightColor)
+    canvasDrawer.roundCorners(matrixCoordinates, content, BLACK, printerConfig.darkColor, printerConfig.lightColor)
+    canvasDrawer.connectEdgeCircles(matrixCoordinates, content, WHITE, canvasConfig.lightColor)
   }
 }

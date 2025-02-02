@@ -77,6 +77,43 @@ export class CanvasDrawer {
       }
     }
   }
+  connectEdgeCircles(coordinates: Coordinates, matrix: Matrix<number>, value: Module, color: Color) {
+    const diameter = this.config.cellSize
+
+    const minCoordinate = 0
+    const maxCoordinate = matrix.length - 1
+    
+    for (let row = 0; row < matrix.length; row++) {
+      for (let column = 0; column < matrix[0].length; column++) {
+        if (
+          row !== minCoordinate && row !== maxCoordinate && 
+          column !== minCoordinate && column !== maxCoordinate
+        ) continue
+
+        const isTopModule = row === minCoordinate
+        const isRightModule = column === maxCoordinate
+        const isBottomModule = row === maxCoordinate
+        const isLeftModule = column === minCoordinate
+
+        if (isTopModule) {
+          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
+          this.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
+        }
+        if (isRightModule) {
+          const coordinate = getPoint(column * diameter + diameter / 2 + coordinates.x, row * diameter + coordinates.y)
+          this.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
+        }
+        if (isBottomModule) {
+          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + diameter / 2 + coordinates.y)
+          this.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
+        }
+        if (isLeftModule) {
+          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
+          this.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
+        }
+      }
+    }
+  }
 
   roundCorners(coordinates: Coordinates, matrix: Matrix<number>, value: Module, moduleColor: Color, roundColor: Color) {
     const diameter = this.config.cellSize
