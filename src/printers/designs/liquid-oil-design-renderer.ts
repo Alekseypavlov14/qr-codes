@@ -19,6 +19,7 @@ export class LiquidOilDesignRenderer implements DesignRenderer {
     canvasDrawer.drawMatrixWithCircles(matrixCoordinates, content, BLACK, printerConfig.darkColor)
     canvasDrawer.connectConsecutiveCircles(matrixCoordinates, content, BLACK, printerConfig.darkColor)
     canvasDrawer.roundCorners(matrixCoordinates, content, WHITE, printerConfig.lightColor, printerConfig.darkColor)
+    canvasDrawer.connectEdgeCircles(matrixCoordinates, content, WHITE, canvasConfig.lightColor)
 
     const bottomRightCornerCircleCoordinate = matrixCoordinate + (matrixSize - 1) * canvasConfig.cellSize
     const bottomRightCornerCircleCoordinates = getPoint(bottomRightCornerCircleCoordinate, bottomRightCornerCircleCoordinate)
