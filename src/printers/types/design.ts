@@ -1,1 +1,1 @@
-export type Design = 'classic' | 'liquid' | 'oil'
+export type Design = 'classic' | 'circles' | 'liquid' | 'liquid-oil' | 'oil'

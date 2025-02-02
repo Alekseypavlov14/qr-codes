@@ -9,6 +9,8 @@ export * from './types/color'
 
 export {
   designClassic,
+  designCircles,
   designLiquid,
+  designLiquidOil,
   designOil
 } from './constants'
