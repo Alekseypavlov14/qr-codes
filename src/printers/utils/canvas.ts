@@ -14,36 +14,38 @@ export class CanvasDrawer {
     this.config = config
   }
 
-  drawMatrix(coordinates: Coordinates, matrix: Matrix<number>, cellSize: number) {
+  drawMatrix(coordinates: Coordinates, matrix: Matrix<number>) {
     for (let row = 0; row < matrix.length; row++) {
       for (let column = 0; column < matrix[0].length; column++) {
         const fillColor = matrix[row][column] === BLACK
           ? this.config.darkColor
           : this.config.lightColor
 
-        const coordinate = getPoint(column * cellSize + coordinates.x, row * cellSize + coordinates.y)
-        const size = getSize(cellSize, cellSize)
+        const coordinate = getPoint(column * this.config.cellSize + coordinates.x, row * this.config.cellSize + coordinates.y)
+        const size = getSize(this.config.cellSize, this.config.cellSize)
 
         this.drawRectangle(coordinate, size, fillColor)
       }
     }
   }
 
-  drawMatrixWithCircles(coordinates: Coordinates, matrix: Matrix<number>, diameter: number) {
+  drawMatrixWithCircles(coordinates: Coordinates, matrix: Matrix<number>) {
     for (let row = 0; row < matrix.length; row++) {
       for (let column = 0; column < matrix[0].length; column++) {
         const fillColor = matrix[row][column] === BLACK
           ? this.config.darkColor
           : this.config.lightColor
 
-        const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
+        const coordinate = getPoint(column * this.config.cellSize + coordinates.x, row * this.config.cellSize + coordinates.y)
 
-        this.drawCircle(coordinate, diameter, fillColor)
+        this.drawCircle(coordinate, this.config.cellSize, fillColor)
       }
     }
   }
 
-  connectConsecutiveCircles(coordinates: Coordinates, matrix: Matrix<number>, diameter: number) {
+  connectConsecutiveCircles(coordinates: Coordinates, matrix: Matrix<number>) {
+    const diameter = this.config.cellSize
+
     for (let row = 0; row < matrix.length; row++) {
       for (let column = 0; column < matrix[0].length; column++) {
         const module = matrix[row][column]
@@ -98,5 +100,9 @@ export class CanvasDrawer {
     const backgroundCoordinate = getPoint(0, 0)
     const backgroundSize = getSize(this.config.width, this.config.height)
     this.drawRectangle(backgroundCoordinate, backgroundSize, color)
+  }
+
+  getConfig() {
+    return this.config
   }
 }

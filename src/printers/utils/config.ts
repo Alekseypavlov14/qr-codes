@@ -5,6 +5,7 @@ export function normalizeConfig(config: Partial<PrinterConfig>): Required<Printe
   return ({
     paddingCells: config.paddingCells ?? defaultPrinterConfig.paddingCells,
     lightColor: config.lightColor ?? defaultPrinterConfig.lightColor,
-    darkColor: config.darkColor ?? defaultPrinterConfig.darkColor
+    darkColor: config.darkColor ?? defaultPrinterConfig.darkColor,
+    design: config.design ?? defaultPrinterConfig.design,
   })
 }

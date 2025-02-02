@@ -1,15 +1,16 @@
-import { defaultPrinterConfig, RESOLUTION_INCREASE_COEFFICIENT } from '../constants'
-import { normalizeConfig } from '../utils/config'
-import { PrinterConfig } from '../types/printer-config'
-import { CanvasDrawer } from '../utils/canvas'
-import { HTML_UTILS } from '../utils/html'
-import { getPoint } from '../../core/shared/utils/coordinates'
-import { IPrinter } from '../printer.interface'
-import { Injector } from '../types/injector'
-import { Matrix } from '../../core/shared/types/matrix'
-import { Color } from '../types/color'
+import { defaultPrinterConfig, mapDesignToRenderer, RESOLUTION_INCREASE_COEFFICIENT } from './constants'
+import { normalizeConfig } from './utils/config'
+import { PrinterConfig } from './types/printer-config'
+import { CanvasDrawer } from './utils/canvas'
+import { HTML_UTILS } from './utils/html'
+import { getPoint } from '../core/shared/utils/coordinates'
+import { IPrinter } from './printer.interface'
+import { Injector } from './types/injector'
+import { Matrix } from '../core/shared/types/matrix'
+import { Design } from './types/design'
+import { Color } from './types/color'
 
-export class PrinterClassic implements IPrinter {
+export class Printer implements IPrinter {
   private readonly config: Required<PrinterConfig>
 
   constructor(config: Partial<PrinterConfig> = defaultPrinterConfig) {
@@ -37,25 +38,29 @@ export class PrinterClassic implements IPrinter {
         context: context,
         width: canvasSize,
         height: canvasSize,
+        cellSize: cellsSize,
         lightColor: this.config.lightColor,
         darkColor: this.config.darkColor
       })
 
-      canvasDrawer.fillBackground(this.config.lightColor)
-
-      const matrixCoordinate = this.config.paddingCells * cellsSize
-      const matrixCoordinates = getPoint(matrixCoordinate, matrixCoordinate)
-
-      canvasDrawer.drawMatrix(matrixCoordinates, matrix, cellsSize)
+      const designRenderer = mapDesignToRenderer[this.config.design]
+      
+      designRenderer.print(this.config, canvasDrawer, matrix)
 
       HTML_UTILS.insertElement(container, canvas)
     }
   }
   
+  setPaddingCells(paddingCells: number) {
+    this.config.paddingCells = paddingCells
+  }
   setLightColor(color: Color): void {
     this.config.lightColor = color
   }
   setDarkColor(color: Color): void {
     this.config.darkColor = color
+  }
+  setDesign(design: Design) {
+    this.config.design = design
   }
 }
