@@ -27,10 +27,22 @@ export class HTMLUtils {
     return context
   }
 
-  getImageFromCanvas(canvas: HTMLCanvasElement, type: string) {
+  getImageURLFromCanvas(canvas: HTMLCanvasElement, type: string): string {
     return canvas.toDataURL(type)
   }
+  downloadFile(fileName: string, fileContent: string) {
+    const a = document.createElement('a')
+    
+    a.href = fileContent
+    a.download = fileName
+  
+    a.click()
+    a.remove()
+  }
 
+  isElementOfType<T extends HTMLElement>(element: HTMLElement, elementType: new () => T): element is T {
+    return element instanceof elementType
+  }
   getElementMinSize(element: HTMLElement) {
     const { width, height } = element.getBoundingClientRect()
     return Math.min(width, height)
