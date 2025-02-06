@@ -1,16 +1,16 @@
 import { getFileNameByNameAndExtension } from './utils/file-name'
 import { mapFileExtensionToMimeType } from './utils/file-type'
+import { defaultConfig, FileType } from './constants'
 import { ELEMENT_TYPE_ERROR } from '../shared/errors'
 import { normalizeConfig } from './utils/config'
 import { IDownloader } from './downloader.interface'
 import { HTML_UTILS } from '../shared/utils/html'
-import { FileType } from './constants'
 import { Config } from './types/config'
 
 export class Downloader implements IDownloader {
   private config: Config
 
-  constructor(config: Partial<Config>) {
+  constructor(config: Partial<Config> = defaultConfig) {
     this.config = normalizeConfig(config)
   }
 
