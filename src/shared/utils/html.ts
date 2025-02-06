@@ -7,6 +7,9 @@ export class HTMLUtils {
 
     return element
   }
+  insertElement(container: HTMLElement, element: HTMLElement) {
+    container.appendChild(element)
+  }
 
   createCanvas(): HTMLCanvasElement {
     const canvas = document.createElement('canvas')
@@ -17,7 +20,6 @@ export class HTMLUtils {
 
     return canvas
   }
-
   getCanvasContext(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
     const context = canvas.getContext('2d')
     if (!context) throw CANVAS_CONTEXT_ERROR
@@ -25,13 +27,13 @@ export class HTMLUtils {
     return context
   }
 
+  getImageFromCanvas(canvas: HTMLCanvasElement, type: string) {
+    return canvas.toDataURL(type)
+  }
+
   getElementMinSize(element: HTMLElement) {
     const { width, height } = element.getBoundingClientRect()
     return Math.min(width, height)
-  }
-
-  insertElement(container: HTMLElement, element: HTMLElement) {
-    container.appendChild(element)
   }
 }
 
