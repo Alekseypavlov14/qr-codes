@@ -1,9 +1,8 @@
-import { defaultPrinterConfig, mapDesignToRenderer, RESOLUTION_INCREASE_COEFFICIENT } from './constants'
+import { defaultPrinterConfig, mapDesignToRenderer } from './constants'
 import { normalizeConfig } from './utils/config'
 import { PrinterConfig } from './types/printer-config'
 import { CanvasDrawer } from './utils/canvas'
 import { HTML_UTILS } from './utils/html'
-import { getPoint } from '../core/shared/utils/coordinates'
 import { IPrinter } from './printer.interface'
 import { Injector } from './types/injector'
 import { Matrix } from '../core/shared/types/matrix'
@@ -28,7 +27,7 @@ export class Printer implements IPrinter {
       const matrixSize = matrix.length
       const cellsAmount = matrixSize + 2 * this.config.paddingCells
 
-      const cellsSize = containerSize / cellsAmount * RESOLUTION_INCREASE_COEFFICIENT
+      const cellsSize = containerSize / cellsAmount * this.config.resolutionIncreaseCoefficient
       const canvasSize = (matrixSize + 2 * this.config.paddingCells) * cellsSize
       
       canvas.width = canvasSize
@@ -51,16 +50,19 @@ export class Printer implements IPrinter {
     }
   }
   
-  setPaddingCells(paddingCells: number) {
-    this.config.paddingCells = paddingCells
-  }
   setLightColor(color: Color): void {
     this.config.lightColor = color
   }
   setDarkColor(color: Color): void {
     this.config.darkColor = color
   }
+  setPaddingCells(paddingCells: number) {
+    this.config.paddingCells = paddingCells
+  }
   setDesign(design: Design) {
     this.config.design = design
+  }
+  setResolutionIncreaseCoefficient(resolutionIncreaseCoefficient: number) {
+    this.config.resolutionIncreaseCoefficient = resolutionIncreaseCoefficient
   }
 }

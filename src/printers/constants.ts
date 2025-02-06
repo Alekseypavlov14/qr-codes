@@ -9,7 +9,7 @@ import { Design } from './types/design'
 import { Color } from './types/color'
 
 export const DEFAULT_PADDING_CELLS = 3
-export const RESOLUTION_INCREASE_COEFFICIENT = 2
+export const DEFAULT_RESOLUTION_INCREASE_COEFFICIENT = 5
 
 export const BLACK_COLOR: Color = '#000'
 export const WHITE_COLOR: Color = '#fff'
@@ -21,10 +21,13 @@ export const designLiquidOil: Design = 'liquid-oil'
 export const designOil: Design = 'oil'
 
 export const defaultPrinterConfig: PrinterConfig = {
-  paddingCells: DEFAULT_PADDING_CELLS,
   lightColor: WHITE_COLOR,
   darkColor: BLACK_COLOR,
-  design: designClassic
+
+  paddingCells: DEFAULT_PADDING_CELLS,
+  design: designClassic,
+  
+  resolutionIncreaseCoefficient: DEFAULT_RESOLUTION_INCREASE_COEFFICIENT
 }
 
 export const mapDesignToRenderer: Record<Design, DesignRenderer> = {
