@@ -1,3 +1,3 @@
 export interface IDownloader {
-  download(selector: string): void
+  download(canvas: HTMLCanvasElement): void
 }

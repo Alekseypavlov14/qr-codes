@@ -1,12 +1,6 @@
 import { CANVAS_CONTEXT_ERROR, CONTAINER_IS_NOT_FOUND_ERROR } from '../errors'
 
 export class HTMLUtils {
-  select(selector: string): HTMLElement {
-    const element = document.querySelector(selector)
-    if (!element || !(element instanceof HTMLElement)) throw CONTAINER_IS_NOT_FOUND_ERROR
-
-    return element
-  }
   insertElement(container: HTMLElement, element: HTMLElement) {
     container.appendChild(element)
   }

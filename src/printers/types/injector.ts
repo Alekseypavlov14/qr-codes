@@ -1,1 +1,1 @@
-export type Injector = (selector: string) => void
+export type Injector = (container: HTMLElement) => void

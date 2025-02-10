@@ -17,8 +17,7 @@ export class Printer implements IPrinter {
   }
 
   print(matrix: Matrix<number>): Injector {
-    return (selector) => {
-      const container = HTML_UTILS.select(selector)
+    return <T extends HTMLElement>(container: T) => {
       const containerSize = HTML_UTILS.getElementMinSize(container)
 
       const canvas = HTML_UTILS.createCanvas()

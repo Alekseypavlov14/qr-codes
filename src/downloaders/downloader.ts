@@ -14,13 +14,11 @@ export class Downloader implements IDownloader {
     this.config = normalizeConfig(config)
   }
 
-  download(selector: string): void {
-    const element = HTML_UTILS.select(selector)
-
-    if (!HTML_UTILS.isElementOfType(element, HTMLCanvasElement)) throw ELEMENT_TYPE_ERROR
+  download(canvas: HTMLCanvasElement): void {
+    if (!HTML_UTILS.isElementOfType(canvas, HTMLCanvasElement)) throw ELEMENT_TYPE_ERROR
    
     const fileMimeType = mapFileExtensionToMimeType(this.config.fileType)
-    const imageURL = HTML_UTILS.getImageURLFromCanvas(element, fileMimeType)
+    const imageURL = HTML_UTILS.getImageURLFromCanvas(canvas, fileMimeType)
 
     const fileName = getFileNameByNameAndExtension(this.config.fileName, this.config.fileType)
 

@@ -67,7 +67,7 @@ const downloader = new Downloader({
   fileType: fileTypePNG
 })
 
-downloader.download('#canvas-selector')
+downloader.download(canvasElement)
 ```
 
 [See Configuration Options](#configuration-options)
