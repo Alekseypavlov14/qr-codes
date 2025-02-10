@@ -3,6 +3,7 @@ import { BCH_VERSION_TOTAL_LENGTH } from '../../../encoding/constants'
 import { TemplateDrawer } from './template-drawer.interface'
 import { getPoint } from '../../../shared/utils/coordinates'
 import { VERSION } from '../../../configuration/version'
+import { inverse } from '../../../shared/utils/strings'
 import { Pattern } from '../../types/pattern.interface'
 import { Version } from '../../../configuration/types'
 import { getSize } from '../../../shared/utils/sizes'
@@ -15,9 +16,10 @@ import { PATH } from '../../utils/path'
 export class VersionTemplateDrawer implements TemplateDrawer {
   draw(version: Version, content: Binary): Figure[] {
     const versionFigureCoordinate = this.computeCoordinate(version)
+    const inverseContent = inverse(content)
     
-    const topRightVersionPattern = this.getTopRightVersionPattern(content)
-    const bottomLeftVersionPattern = this.getBottomLeftVersionPattern(content)
+    const topRightVersionPattern = this.getTopRightVersionPattern(inverseContent)
+    const bottomLeftVersionPattern = this.getBottomLeftVersionPattern(inverseContent)
 
     const topRightVersionFigure = PATTERN.applyWithPosition(getPoint(versionFigureCoordinate, 0), topRightVersionPattern)
     const bottomLeftVersionFigure = PATTERN.applyWithPosition(getPoint(0, versionFigureCoordinate), bottomLeftVersionPattern)
