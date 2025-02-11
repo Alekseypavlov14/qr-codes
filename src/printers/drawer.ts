@@ -1,17 +1,16 @@
-import { CanvasConfig } from '../interfaces/canvas-config'
-import { Coordinates } from '../../core/shared/types/coordinates'
-import { getPoint } from '../../core/shared/utils/coordinates'
-import { getSize } from '../../core/shared/utils/sizes'
-import { Matrix } from '../../core/shared/types/matrix'
-import { Module } from '../../core/shared/types/module'
-import { BLACK } from '../../core/shared/constants'
-import { Color } from '../types/color'
-import { Size } from '../../core/shared/types/size'
+import { DrawerConfig } from './interfaces/drawer-config'
+import { Coordinates } from '../core/shared/types/coordinates'
+import { getPoint } from '../core/shared/utils/coordinates'
+import { getSize } from '../core/shared/utils/sizes'
+import { Matrix } from '../core/shared/types/matrix'
+import { Module } from '../core/shared/types/module'
+import { Color } from './types/color'
+import { Size } from '../core/shared/types/size'
 
-export class CanvasDrawer {
-  private readonly config: CanvasConfig
+export class Drawer {
+  private readonly config: DrawerConfig
 
-  constructor(config: CanvasConfig) {
+  constructor(config: DrawerConfig) {
     this.config = config
   }
 
@@ -23,7 +22,7 @@ export class CanvasDrawer {
         const coordinate = getPoint(column * this.config.cellSize + coordinates.x, row * this.config.cellSize + coordinates.y)
         const size = getSize(this.config.cellSize, this.config.cellSize)
 
-        this.drawRectangle(coordinate, size, color)
+        this.config.engine.drawRectangle(coordinate, size, color)
       }
     }
   }
@@ -34,7 +33,7 @@ export class CanvasDrawer {
 
         const coordinate = getPoint(column * this.config.cellSize + coordinates.x, row * this.config.cellSize + coordinates.y)
 
-        this.drawCircle(coordinate, this.config.cellSize, color)
+        this.config.engine.drawCircle(coordinate, this.config.cellSize, color)
       }
     }
   }
@@ -51,28 +50,28 @@ export class CanvasDrawer {
         const topModule = matrix?.[row - 1]?.[column]
         if (topModule === value) {
           const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
-          this.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
+          this.config.engine.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
         }
 
         // compare with right => fill right half
         const rightModule = matrix?.[row]?.[column + 1]
         if (rightModule === value) {
           const coordinate = getPoint(column * diameter + diameter / 2 + coordinates.x, row * diameter + coordinates.y)
-          this.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
+          this.config.engine.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
         }
 
         // compare with bottom => fill bottom half
         const bottomModule = matrix?.[row + 1]?.[column]
         if (bottomModule === value) {
           const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + diameter / 2 + coordinates.y)
-          this.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
+          this.config.engine.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
         }
 
         // compare with left => fill left half
         const leftModule = matrix?.[row]?.[column - 1]
         if (leftModule === value) {
           const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
-          this.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
+          this.config.engine.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
         }
       }
     }
@@ -100,19 +99,19 @@ export class CanvasDrawer {
 
         if (isTopModule) {
           const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
-          this.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
+          this.config.engine.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
         }
         if (isRightModule) {
           const coordinate = getPoint(column * diameter + diameter / 2 + coordinates.x, row * diameter + coordinates.y)
-          this.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
+          this.config.engine.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
         }
         if (isBottomModule) {
           const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + diameter / 2 + coordinates.y)
-          this.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
+          this.config.engine.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
         }
         if (isLeftModule) {
           const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
-          this.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
+          this.config.engine.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
         }
       }
     }
@@ -146,47 +145,41 @@ export class CanvasDrawer {
 
         if (isSurroundedByOppositeColorFromTopRight) {
           const coordinate = getPoint(column * diameter + diameter / 2 + coordinates.x, row * diameter + coordinates.y)
-          this.drawRectangle(coordinate, cornerRectangleSize, roundColor)
+          this.config.engine.drawRectangle(coordinate, cornerRectangleSize, roundColor)
         }
 
         if (isSurroundedByOppositeColorFromBottomRight) {
           const coordinate = getPoint(column * diameter + diameter / 2 + coordinates.x, row * diameter + diameter / 2 + coordinates.y)
-          this.drawRectangle(coordinate, cornerRectangleSize, roundColor)
+          this.config.engine.drawRectangle(coordinate, cornerRectangleSize, roundColor)
         }
 
         if (isSurroundedByOppositeColorFromBottomLeft) {
           const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + diameter / 2 + coordinates.y)
-          this.drawRectangle(coordinate, cornerRectangleSize, roundColor)
+          this.config.engine.drawRectangle(coordinate, cornerRectangleSize, roundColor)
         }
 
         if (isSurroundedByOppositeColorFromTopLeft) {
           const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
-          this.drawRectangle(coordinate, cornerRectangleSize, roundColor)
+          this.config.engine.drawRectangle(coordinate, cornerRectangleSize, roundColor)
         }
 
-        this.drawCircle(circleCoordinate, diameter, moduleColor)
+        this.config.engine.drawCircle(circleCoordinate, diameter, moduleColor)
       }
     }
-  }
-
-  drawRectangle(coordinates: Coordinates, size: Size, color: Color) {
-    this.config.context.fillStyle = color
-    this.config.context.rect(coordinates.x, coordinates.y, size.width, size.height)
-    this.config.context.fillRect(coordinates.x, coordinates.y, size.width, size.height)
-  }
-
-  drawCircle(coordinates: Coordinates, diameter: number, color: Color) {
-    this.config.context.fillStyle = color
-
-    this.config.context.beginPath()
-    this.config.context.arc(coordinates.x + diameter / 2, coordinates.y + diameter / 2, diameter / 2, 0, Math.PI * 2)
-    this.config.context.fill()
   }
 
   fillBackground(color: Color) {
     const backgroundCoordinate = getPoint(0, 0)
     const backgroundSize = getSize(this.config.width, this.config.height)
-    this.drawRectangle(backgroundCoordinate, backgroundSize, color)
+
+    this.config.engine.drawRectangle(backgroundCoordinate, backgroundSize, color)
+  }
+
+  drawRectangle(coordinates: Coordinates, sizes: Size, color: Color) {
+    this.config.engine.drawRectangle(coordinates, sizes, color)
+  }
+  drawCircle(coordinates: Coordinates, diameter: number, color: Color) {
+    this.config.engine.drawCircle(coordinates, diameter, color)
   }
 
   getConfig() {

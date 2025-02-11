@@ -1,13 +1,13 @@
-import { defaultPrinterConfig, mapDesignToSetup } from './constants'
+import { defaultPrinterConfig, mapDesignToSetup, mapOutputToProcess } from './constants'
 import { normalizeConfig } from './utils/config'
 import { PrinterConfig } from './interfaces/printer-config'
-import { CanvasDrawer } from './utils/canvas'
+import { DesignToken } from './types/design'
 import { HTML_UTILS } from '../shared/utils/html'
 import { IPrinter } from './printer.interface'
 import { Injector } from './types/injector'
 import { Matrix } from '../core/shared/types/matrix'
-import { Design } from './types/design'
 import { Color } from './types/color'
+import { EngineToken } from './types/engine'
 
 export class Printer implements IPrinter {
   private readonly config: Required<PrinterConfig>
@@ -16,36 +16,12 @@ export class Printer implements IPrinter {
     this.config = normalizeConfig(config)
   }
 
-  print(matrix: Matrix<number>): Injector {
+  print(content: Matrix<number>): Injector {
     return <T extends HTMLElement>(container: T) => {
-      const containerSize = HTML_UTILS.getElementMinSize(container)
+      const process = mapOutputToProcess[this.config.output]
+      const element = process.run(this.config, container, content)
 
-      const canvas = HTML_UTILS.createCanvas()
-      const context = HTML_UTILS.getCanvasContext(canvas)
-
-      const matrixSize = matrix.length
-      const cellsAmount = matrixSize + 2 * this.config.paddingCells
-
-      const cellsSize = containerSize / cellsAmount * this.config.resolutionIncreaseCoefficient
-      const canvasSize = (matrixSize + 2 * this.config.paddingCells) * cellsSize
-      
-      canvas.width = canvasSize
-      canvas.height = canvasSize
-
-      const canvasDrawer = new CanvasDrawer({
-        context: context,
-        width: canvasSize,
-        height: canvasSize,
-        cellSize: cellsSize,
-        lightColor: this.config.lightColor,
-        darkColor: this.config.darkColor
-      })
-
-      const designSetup = mapDesignToSetup[this.config.design]
-      
-      designSetup.print(this.config, canvasDrawer, matrix)
-
-      HTML_UTILS.insertElement(container, canvas)
+      HTML_UTILS.insertElement(container, element)
     }
   }
   
@@ -55,10 +31,13 @@ export class Printer implements IPrinter {
   setDarkColor(color: Color): void {
     this.config.darkColor = color
   }
+  setOutput(output: EngineToken) {
+    this.config.output = output
+  }
   setPaddingCells(paddingCells: number) {
     this.config.paddingCells = paddingCells
   }
-  setDesign(design: Design) {
+  setDesign(design: DesignToken) {
     this.config.design = design
   }
   setResolutionIncreaseCoefficient(resolutionIncreaseCoefficient: number) {

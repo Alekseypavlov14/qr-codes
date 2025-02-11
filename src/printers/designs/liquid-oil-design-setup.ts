@@ -1,38 +1,38 @@
 import { PrinterConfig } from '../interfaces/printer-config'
 import { BLACK, WHITE } from '../../core/shared/constants'
-import { CanvasDrawer } from '../utils/canvas'
 import { DesignSetup } from '../interfaces/design-setup'
 import { getPoint } from '../../core/shared/utils/coordinates'
 import { getSize } from '../../core/shared/utils/sizes'
 import { Matrix } from '../../core/shared/types/matrix'
+import { Drawer } from '../drawer'
 
 export class LiquidOilDesignSetup implements DesignSetup {
-  print(printerConfig: Required<PrinterConfig>, canvasDrawer: CanvasDrawer, content: Matrix<number>): void {
-    const canvasConfig = canvasDrawer.getConfig()
+  print(printerConfig: Required<PrinterConfig>, drawer: Drawer, content: Matrix<number>): void {
+    const config = drawer.getConfig()
     
-    canvasDrawer.fillBackground(printerConfig.lightColor)
+    drawer.fillBackground(printerConfig.lightColor)
 
-    const matrixCoordinate = printerConfig.paddingCells * canvasConfig.cellSize
+    const matrixCoordinate = printerConfig.paddingCells * config.cellSize
     const matrixCoordinates = getPoint(matrixCoordinate, matrixCoordinate)
     const matrixSize = content.length
 
-    canvasDrawer.drawMatrixWithCircles(matrixCoordinates, content, BLACK, printerConfig.darkColor)
-    canvasDrawer.connectConsecutiveCircles(matrixCoordinates, content, BLACK, printerConfig.darkColor)
-    canvasDrawer.roundCorners(matrixCoordinates, content, WHITE, printerConfig.lightColor, printerConfig.darkColor)
-    canvasDrawer.connectEdgeCircles(matrixCoordinates, content, WHITE, canvasConfig.lightColor)
+    drawer.drawMatrixWithCircles(matrixCoordinates, content, BLACK, printerConfig.darkColor)
+    drawer.connectConsecutiveCircles(matrixCoordinates, content, BLACK, printerConfig.darkColor)
+    drawer.roundCorners(matrixCoordinates, content, WHITE, printerConfig.lightColor, printerConfig.darkColor)
+    drawer.connectEdgeCircles(matrixCoordinates, content, WHITE, config.lightColor)
 
-    const bottomRightCornerCircleCoordinate = matrixCoordinate + (matrixSize - 1) * canvasConfig.cellSize
+    const bottomRightCornerCircleCoordinate = matrixCoordinate + (matrixSize - 1) * config.cellSize
     const bottomRightCornerCircleCoordinates = getPoint(bottomRightCornerCircleCoordinate, bottomRightCornerCircleCoordinate)
 
     const bottomRightCircleColor = content[matrixSize - 1][matrixSize - 1] === BLACK 
       ? printerConfig.darkColor 
       : printerConfig.lightColor
 
-    const bottomRightCornerRoundCoordinate = matrixCoordinate + (matrixSize - 0.5) * canvasConfig.cellSize
+    const bottomRightCornerRoundCoordinate = matrixCoordinate + (matrixSize - 0.5) * config.cellSize
     const bottomRightCornerRoundCoordinates = getPoint(bottomRightCornerRoundCoordinate, bottomRightCornerRoundCoordinate)
-    const bottomRightCornerRoundSize = getSize(canvasConfig.cellSize / 2, canvasConfig.cellSize / 2)
+    const bottomRightCornerRoundSize = getSize(config.cellSize / 2, config.cellSize / 2)
 
-    canvasDrawer.drawRectangle(bottomRightCornerRoundCoordinates, bottomRightCornerRoundSize, printerConfig.lightColor)
-    canvasDrawer.drawCircle(bottomRightCornerCircleCoordinates, canvasConfig.cellSize, bottomRightCircleColor)
+    drawer.drawRectangle(bottomRightCornerRoundCoordinates, bottomRightCornerRoundSize, printerConfig.lightColor)
+    drawer.drawCircle(bottomRightCornerCircleCoordinates, config.cellSize, bottomRightCircleColor)
   }
 }

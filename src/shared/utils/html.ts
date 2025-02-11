@@ -1,7 +1,8 @@
-import { CANVAS_CONTEXT_ERROR, CONTAINER_IS_NOT_FOUND_ERROR } from '../errors'
+import { CANVAS_CONTEXT_ERROR } from '../errors'
+import { Size } from '../../core/shared/types/size'
 
 export class HTMLUtils {
-  insertElement(container: HTMLElement, element: HTMLElement) {
+  insertElement(container: HTMLElement, element: Element) {
     container.appendChild(element)
   }
 
@@ -19,6 +20,16 @@ export class HTMLUtils {
     if (!context) throw CANVAS_CONTEXT_ERROR
 
     return context
+  }
+
+  createSVG(size: Size): SVGSVGElement {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+
+    svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    svg.setAttribute('viewBox', `0 0 ${size.width} ${size.height}`)
+    svg.setAttribute('version', '1.1')
+
+    return svg
   }
 
   getImageURLFromCanvas(canvas: HTMLCanvasElement, type: string): string {

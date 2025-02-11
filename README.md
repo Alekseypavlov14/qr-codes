@@ -87,8 +87,9 @@ downloader.download(canvasElement)
 |------------------------------|-----------|--------------------------------------------------|
 | `lightColor`                 | `string`  | The background color of the QR code.            |
 | `darkColor`                  | `string`  | The foreground color of the QR code.            |
+| `output`                     | `EngineToken` | The output mode 
 | `paddingCells`               | `number`  | The padding around the QR code.                 |
-| `design`                     | `Design`  | The design pattern for QR code customization.    |
+| `design`                     | `DesignToken`  | The design pattern for QR code customization.    |
 | `resolutionIncreaseCoefficient` | `number` | The resolution scaling factor.                  |
 
 ### Downloader Config
@@ -112,5 +113,9 @@ downloader.download(canvasElement)
 - `designLiquid`
 - `designLiquidOil`
 - `designOil`
+
+### EngineToken
+- `canvasEngine`
+- `svgEngine`
 
 ---

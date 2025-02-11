@@ -12,5 +12,7 @@ export {
   designCircles,
   designLiquid,
   designLiquidOil,
-  designOil
+  designOil,
+  canvasEngine,
+  svgEngine
 } from './constants'
