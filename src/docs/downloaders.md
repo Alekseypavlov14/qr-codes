@@ -1,0 +1,1 @@
+```/downloaders``` slice contains logic to download QR Code in different formats.
