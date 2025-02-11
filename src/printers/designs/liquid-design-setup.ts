@@ -1,11 +1,11 @@
-import { DesignRenderer } from '../types/design-renderer'
-import { PrinterConfig } from '../types/printer-config'
+import { PrinterConfig } from '../interfaces/printer-config'
 import { CanvasDrawer } from '../utils/canvas'
+import { DesignSetup } from '../interfaces/design-setup'
 import { getPoint } from '../../core/shared/utils/coordinates'
 import { Matrix } from '../../core/shared/types/matrix'
 import { BLACK } from '../../core/shared/constants'
 
-export class LiquidDesignRenderer implements DesignRenderer {
+export class LiquidDesignSetup implements DesignSetup {
   print(printerConfig: Required<PrinterConfig>, canvasDrawer: CanvasDrawer, content: Matrix<number>): void {
     const canvasConfig = canvasDrawer.getConfig()
     

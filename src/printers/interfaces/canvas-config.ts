@@ -1,4 +1,4 @@
-import { Color } from './color'
+import { Color } from '../types/color'
 
 export interface CanvasConfig {
   context: CanvasRenderingContext2D

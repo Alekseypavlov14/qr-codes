@@ -1,4 +1,4 @@
-import { CanvasConfig } from '../types/canvas-config'
+import { CanvasConfig } from '../interfaces/canvas-config'
 import { Coordinates } from '../../core/shared/types/coordinates'
 import { getPoint } from '../../core/shared/utils/coordinates'
 import { getSize } from '../../core/shared/utils/sizes'

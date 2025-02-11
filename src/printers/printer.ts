@@ -1,6 +1,6 @@
-import { defaultPrinterConfig, mapDesignToRenderer } from './constants'
+import { defaultPrinterConfig, mapDesignToSetup } from './constants'
 import { normalizeConfig } from './utils/config'
-import { PrinterConfig } from './types/printer-config'
+import { PrinterConfig } from './interfaces/printer-config'
 import { CanvasDrawer } from './utils/canvas'
 import { HTML_UTILS } from '../shared/utils/html'
 import { IPrinter } from './printer.interface'
@@ -41,9 +41,9 @@ export class Printer implements IPrinter {
         darkColor: this.config.darkColor
       })
 
-      const designRenderer = mapDesignToRenderer[this.config.design]
+      const designSetup = mapDesignToSetup[this.config.design]
       
-      designRenderer.print(this.config, canvasDrawer, matrix)
+      designSetup.print(this.config, canvasDrawer, matrix)
 
       HTML_UTILS.insertElement(container, canvas)
     }

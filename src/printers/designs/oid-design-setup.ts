@@ -1,12 +1,12 @@
-import { DesignRenderer } from '../types/design-renderer'
-import { PrinterConfig } from '../types/printer-config'
+import { PrinterConfig } from '../interfaces/printer-config'
 import { BLACK, WHITE } from '../../core/shared/constants'
 import { CanvasDrawer } from '../utils/canvas'
+import { DesignSetup } from '../interfaces/design-setup'
 import { getPoint } from '../../core/shared/utils/coordinates'
 import { getSize } from '../../core/shared/utils/sizes'
 import { Matrix } from '../../core/shared/types/matrix'
 
-export class OilDesignRenderer implements DesignRenderer {
+export class OilDesignSetup implements DesignSetup {
   print(printerConfig: Required<PrinterConfig>, canvasDrawer: CanvasDrawer, content: Matrix<number>): void {
     const canvasConfig = canvasDrawer.getConfig()
     

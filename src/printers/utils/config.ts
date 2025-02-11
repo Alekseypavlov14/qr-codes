@@ -1,5 +1,5 @@
 import { defaultPrinterConfig } from '../constants'
-import { PrinterConfig } from '../types/printer-config'
+import { PrinterConfig } from '../interfaces/printer-config'
 
 export function normalizeConfig(config: Partial<PrinterConfig>): Required<PrinterConfig> {
   return ({

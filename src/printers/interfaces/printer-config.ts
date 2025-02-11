@@ -1,5 +1,5 @@
-import { Design } from './design'
-import { Color } from './color'
+import { Design } from '../types/design'
+import { Color } from '../types/color'
 
 export interface PrinterConfig {
   lightColor: Color

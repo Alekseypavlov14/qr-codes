@@ -1,10 +1,10 @@
-import { LiquidOilDesignRenderer } from './designs/liquid-oil-design-renderer'
-import { ClassicDesignRenderer } from './designs/classic-design-renderer'
-import { CirclesDesignRenderer } from './designs/circles-design-renderer'
-import { LiquidDesignRenderer } from './designs/liquid-design-renderer'
-import { OilDesignRenderer } from './designs/oid-design-renderer'
-import { DesignRenderer } from './types/design-renderer'
-import { PrinterConfig } from './types/printer-config'
+import { LiquidOilDesignSetup } from './designs/liquid-oil-design-setup'
+import { ClassicDesignSetup } from './designs/classic-design-setup'
+import { CirclesDesignSetup } from './designs/circles-design-setup'
+import { LiquidDesignSetup } from './designs/liquid-design-setup'
+import { OilDesignSetup } from './designs/oid-design-setup'
+import { DesignSetup } from './interfaces/design-setup'
+import { PrinterConfig } from './interfaces/printer-config'
 import { Design } from './types/design'
 import { Color } from './types/color'
 
@@ -30,11 +30,11 @@ export const defaultPrinterConfig: PrinterConfig = {
   resolutionIncreaseCoefficient: DEFAULT_RESOLUTION_INCREASE_COEFFICIENT
 }
 
-export const mapDesignToRenderer: Record<Design, DesignRenderer> = {
-  [designClassic]: new ClassicDesignRenderer(),
-  [designCircles]: new CirclesDesignRenderer(),
-  [designLiquid]: new LiquidDesignRenderer(),
-  [designLiquidOil]: new LiquidOilDesignRenderer(),
-  [designOil]: new OilDesignRenderer(),
-} as Record<Design, DesignRenderer>
+export const mapDesignToSetup: Record<Design, DesignSetup> = {
+  [designClassic]: new ClassicDesignSetup(),
+  [designCircles]: new CirclesDesignSetup(),
+  [designLiquid]: new LiquidDesignSetup(),
+  [designLiquidOil]: new LiquidOilDesignSetup(),
+  [designOil]: new OilDesignSetup(),
+} as Record<Design, DesignSetup>
 
