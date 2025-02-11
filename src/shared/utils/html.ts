@@ -1,4 +1,5 @@
 import { CANVAS_CONTEXT_ERROR } from '../errors'
+import { SVG_MIME_TYPE } from '../../downloaders/constants'
 import { Size } from '../../core/shared/types/size'
 
 export class HTMLUtils {
@@ -35,6 +36,14 @@ export class HTMLUtils {
   getImageURLFromCanvas(canvas: HTMLCanvasElement, type: string): string {
     return canvas.toDataURL(type)
   }
+  getImageURLFromSVG(svg: SVGSVGElement) {
+    const serializer = new XMLSerializer()
+    const svgString = serializer.serializeToString(svg)
+
+    const encodedData = `data:${SVG_MIME_TYPE};charset=utf-8,${encodeURIComponent(svgString)}`
+    return encodedData
+  }
+
   downloadFile(fileName: string, fileContent: string) {
     const a = document.createElement('a')
     
@@ -45,7 +54,7 @@ export class HTMLUtils {
     a.remove()
   }
 
-  isElementOfType<T extends HTMLElement>(element: HTMLElement, elementType: new () => T): element is T {
+  isElementOfType<T extends Element>(element: Element, elementType: new () => T): element is T {
     return element instanceof elementType
   }
   getElementMinSize(element: HTMLElement) {

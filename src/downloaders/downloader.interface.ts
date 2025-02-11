@@ -1,3 +1,4 @@
 export interface IDownloader {
-  download(canvas: HTMLCanvasElement): void
+  downloadFromCanvas(canvas: HTMLCanvasElement): void
+  downloadFromSVG(svg: SVGSVGElement): void
 }

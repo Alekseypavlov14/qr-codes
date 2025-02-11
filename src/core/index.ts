@@ -11,3 +11,5 @@ export {
   BYTE_MODE,
   KANJI_MODE,
 } from './configuration/types'
+
+export { ERROR_CORRECTION_ASCENDING_LIST } from './configuration/constants'

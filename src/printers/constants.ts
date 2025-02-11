@@ -24,8 +24,21 @@ export const designLiquid: DesignToken = 'liquid'
 export const designLiquidOil: DesignToken = 'liquid-oil'
 export const designOil: DesignToken = 'oil'
 
+export const designsList: DesignToken[] = [
+  designClassic,
+  designCircles,
+  designLiquid,
+  designLiquidOil,
+  designOil
+] 
+
 export const canvasEngine: EngineToken = 'canvas'
 export const svgEngine: EngineToken = 'svg'
+
+export const enginesList: EngineToken[] = [
+  canvasEngine,
+  svgEngine
+]
 
 export const defaultPrinterConfig: PrinterConfig = {
   lightColor: WHITE_COLOR,

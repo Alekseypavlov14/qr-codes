@@ -13,6 +13,8 @@ export {
   designLiquid,
   designLiquidOil,
   designOil,
+  designsList,
   canvasEngine,
-  svgEngine
+  svgEngine,
+  enginesList
 } from './constants'
