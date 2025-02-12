@@ -37,24 +37,5 @@ export class OilDesignSetup implements DesignSetup {
     })
 
     drawer.drawMatrixWithConnectedCircles(matrixCoordinates, content, BLACK, printerConfig.darkColor, printerConfig.lightColor)
-
-    drawer.styleMatrix(matrixCoordinates, content, ({ coordinate, value, sizes, neighbors }) => {
-      if (value !== BLACK) return
-
-      const diameter = sizes.width
-      const filledCorners: Corner[] = []
-
-      if (neighbors.topLeft === BLACK) filledCorners.push(topLeftCorner)
-      if (neighbors.topRight === BLACK) filledCorners.push(topRightCorner)
-      if (neighbors.bottomRight === BLACK) filledCorners.push(bottomRightCorner)
-      if (neighbors.bottomLeft === BLACK && neighbors.left === BLACK) filledCorners.push(bottomLeftCorner)
-      
-      const restCorners = allCorners.filter(corner => !filledCorners.includes(corner))
-
-      drawer.drawCircle(coordinate, diameter, printerConfig.lightColor)
-
-      filledCorners.forEach(corner => drawer.drawOuterCorner(coordinate, diameter, corner, printerConfig.darkColor))
-      restCorners.forEach(corner => drawer.drawOuterCorner(coordinate, diameter, corner, printerConfig.lightColor))
-    })
   }
 }
