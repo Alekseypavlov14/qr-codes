@@ -4,6 +4,7 @@ import { getPoint } from '../core/shared/utils/coordinates'
 import { getSize } from '../core/shared/utils/sizes'
 import { Matrix } from '../core/shared/types/matrix'
 import { Module } from '../core/shared/types/module'
+import { Corner } from './types/corner'
 import { Color } from './types/color'
 import { Size } from '../core/shared/types/size'
 
@@ -175,11 +176,26 @@ export class Drawer {
     this.config.engine.drawRectangle(backgroundCoordinate, backgroundSize, color)
   }
 
+  drawFrameborder(dimension: number, width: number, color: Color) {
+    const topRectCoordinates = getPoint(0, 0)
+    const bottomRectangle = getPoint(0, dimension - width)
+    const leftRectangle = getPoint(0, 0)
+    const rightRectangle = getPoint(dimension - width, 0)
+
+    this.drawRectangle(topRectCoordinates, getSize(dimension, width), color)
+    this.drawRectangle(bottomRectangle, getSize(dimension, width), color)
+    this.drawRectangle(leftRectangle, getSize(width, dimension), color)
+    this.drawRectangle(rightRectangle, getSize(width, dimension), color)
+  }
+
   drawRectangle(coordinates: Coordinates, sizes: Size, color: Color) {
     this.config.engine.drawRectangle(coordinates, sizes, color)
   }
   drawCircle(coordinates: Coordinates, diameter: number, color: Color) {
     this.config.engine.drawCircle(coordinates, diameter, color)
+  }
+  drawOuterCorner(coordinates: Coordinates, diameter: number, corner: Corner, color: Color) {
+    this.config.engine.drawOuterCorner(coordinates, diameter, corner, color)
   }
 
   getConfig() {

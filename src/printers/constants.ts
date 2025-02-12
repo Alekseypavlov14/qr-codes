@@ -10,6 +10,7 @@ import { EngineToken } from './types/engine'
 import { DesignToken } from './types/design'
 import { SVGProcess } from './processes/svg-process'
 import { Process } from './interfaces/process'
+import { Corner } from './types/corner'
 import { Color } from './types/color'
 
 export const DEFAULT_PADDING_CELLS = 3
@@ -17,6 +18,11 @@ export const DEFAULT_RESOLUTION_INCREASE_COEFFICIENT = 5
 
 export const BLACK_COLOR: Color = '#000'
 export const WHITE_COLOR: Color = '#fff'
+
+export const topLeftCorner: Corner = 'top-left'
+export const topRightCorner: Corner = 'top-right'
+export const bottomRightCorner: Corner = 'bottom-right'
+export const bottomLeftCorner: Corner = 'bottom-left'
 
 export const designClassic: DesignToken = 'classic'
 export const designCircles: DesignToken = 'circles'
