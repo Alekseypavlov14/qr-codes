@@ -14,7 +14,7 @@ export class SVGProcess implements Process<SVGSVGElement> {
     const matrixSize = content.length
     const cellsAmount = matrixSize + 2 * printerConfig.paddingCells
     
-    const cellsSize = (containerSize / cellsAmount) * printerConfig.resolutionIncreaseCoefficient
+    const cellsSize = containerSize / cellsAmount
     const svgDimension = (matrixSize + 2 * printerConfig.paddingCells) * cellsSize
     
     const svgSize = getSize(svgDimension, svgDimension)

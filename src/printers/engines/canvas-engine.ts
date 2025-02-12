@@ -37,17 +37,29 @@ export class CanvasEngine implements Engine {
     const endAngle = startAngle + Math.PI / 2
 
     const startPoint = {
-      [topLeftCorner]: getPoint(0, 0),
-      [topRightCorner]: getPoint(diameter, 0),
-      [bottomRightCorner]: getPoint(diameter, diameter),
-      [bottomLeftCorner]: getPoint(0, diameter),
+      [topLeftCorner]: getPoint(coordinates.x, coordinates.y),
+      [topRightCorner]: getPoint(coordinates.x + diameter, coordinates.y),
+      [bottomRightCorner]: getPoint(coordinates.x + diameter, coordinates.y + diameter),
+      [bottomLeftCorner]: getPoint(coordinates.x, coordinates.y + diameter),
     }[corner]
-
+  
     const points = {
-      [topLeftCorner]: [getPoint(radius, 0), getPoint(0, radius)],
-      [topRightCorner]: [getPoint(diameter, radius), getPoint(radius, 0)],
-      [bottomRightCorner]: [getPoint(radius, diameter), getPoint(diameter, radius)],
-      [bottomLeftCorner]: [getPoint(0, radius), getPoint(radius, diameter)]
+      [topLeftCorner]: [
+        getPoint(coordinates.x + radius, coordinates.y), 
+        getPoint(coordinates.x, coordinates.y + radius)
+      ],
+      [topRightCorner]: [
+        getPoint(coordinates.x + diameter, coordinates.y + radius), 
+        getPoint(coordinates.x + radius, coordinates.y)
+      ],
+      [bottomRightCorner]: [
+        getPoint(coordinates.x + radius, coordinates.y + diameter), 
+        getPoint(coordinates.x + diameter, coordinates.y + radius)
+      ],
+      [bottomLeftCorner]: [
+        getPoint(coordinates.x, coordinates.y + radius), 
+        getPoint(coordinates.x + radius, coordinates.y + diameter)
+      ]
     }[corner]
 
     this.context.fillStyle = color

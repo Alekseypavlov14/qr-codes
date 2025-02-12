@@ -33,41 +33,43 @@ export class SVGEngine implements Engine {
   }
 
   drawOuterCorner(coordinates: Coordinates, diameter: number, corner: Corner, color: Color): void {
-    const centerX = coordinates.x + diameter / 2
-    const centerY = coordinates.y + diameter / 2
     const radius = diameter / 2
   
-    const startAngle = {
-      [topLeftCorner]: Math.PI,
-      [topRightCorner]: 1.5 * Math.PI,
-      [bottomRightCorner]: 0,
-      [bottomLeftCorner]: 0.5 * Math.PI
-    }[corner]
-  
-    const endAngle = startAngle + Math.PI / 2
-  
     const startPoint = {
-      [topLeftCorner]: getPoint(0, 0),
-      [topRightCorner]: getPoint(diameter, 0),
-      [bottomRightCorner]: getPoint(diameter, diameter),
-      [bottomLeftCorner]: getPoint(0, diameter),
+      [topLeftCorner]: getPoint(coordinates.x, coordinates.y),
+      [topRightCorner]: getPoint(coordinates.x + diameter, coordinates.y),
+      [bottomRightCorner]: getPoint(coordinates.x + diameter, coordinates.y + diameter),
+      [bottomLeftCorner]: getPoint(coordinates.x, coordinates.y + diameter),
     }[corner]
   
     const points = {
-      [topLeftCorner]: [getPoint(radius, 0), getPoint(0, radius)],
-      [topRightCorner]: [getPoint(diameter, radius), getPoint(radius, 0)],
-      [bottomRightCorner]: [getPoint(radius, diameter), getPoint(diameter, radius)],
-      [bottomLeftCorner]: [getPoint(0, radius), getPoint(radius, diameter)]
+      [topLeftCorner]: [
+        getPoint(coordinates.x + radius, coordinates.y), 
+        getPoint(coordinates.x, coordinates.y + radius)
+      ],
+      [topRightCorner]: [
+        getPoint(coordinates.x + diameter, coordinates.y + radius), 
+        getPoint(coordinates.x + radius, coordinates.y)
+      ],
+      [bottomRightCorner]: [
+        getPoint(coordinates.x + radius, coordinates.y + diameter), 
+        getPoint(coordinates.x + diameter, coordinates.y + radius)
+      ],
+      [bottomLeftCorner]: [
+        getPoint(coordinates.x, coordinates.y + radius), 
+        getPoint(coordinates.x + radius, coordinates.y + diameter)
+      ]
     }[corner]
   
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path")
 
-    const svgPoint = `M${startPoint.x} ${startPoint.y}`
-    const svgLines = points.map(point => `L${point.x},${point.y}`)
-    const svgArc = `A${radius},${radius} 0 0, 1 ${centerX + Math.cos(endAngle) * radius},${centerY + Math.sin(endAngle) * radius}`
+    const svgPoint = `M ${startPoint.x} ${startPoint.y}`
+    const svgFirstLine = `L ${points[0].x} ${points[0].y}`
+    const svgArc = `A ${radius} ${radius} 0 0 0 ${points[1].x} ${points[1].y}`
+    const svgSecondLine = `L ${startPoint.x} ${startPoint.y}`
     const svgPathTerminator = 'Z'
 
-    const pathData = [svgPoint, ...svgLines, svgArc, svgPathTerminator].join(" ")
+    const pathData = [svgPoint, svgFirstLine, svgArc, svgSecondLine, svgPathTerminator].join(" ")
   
     path.setAttribute("d", pathData)
     path.setAttribute("fill", color)
