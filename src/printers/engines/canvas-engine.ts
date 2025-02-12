@@ -34,7 +34,7 @@ export class CanvasEngine implements Engine {
       [bottomLeftCorner]: 0.5 * Math.PI
     }[corner]
 
-    const endAngle = startAngle + Math.PI / 2
+    const endAngle = startAngle - Math.PI / 2
 
     const startPoint = {
       [topLeftCorner]: getPoint(coordinates.x, coordinates.y),
@@ -43,37 +43,18 @@ export class CanvasEngine implements Engine {
       [bottomLeftCorner]: getPoint(coordinates.x, coordinates.y + diameter),
     }[corner]
   
-    const points = {
-      [topLeftCorner]: [
-        getPoint(coordinates.x + radius, coordinates.y), 
-        getPoint(coordinates.x, coordinates.y + radius)
-      ],
-      [topRightCorner]: [
-        getPoint(coordinates.x + diameter, coordinates.y + radius), 
-        getPoint(coordinates.x + radius, coordinates.y)
-      ],
-      [bottomRightCorner]: [
-        getPoint(coordinates.x + radius, coordinates.y + diameter), 
-        getPoint(coordinates.x + diameter, coordinates.y + radius)
-      ],
-      [bottomLeftCorner]: [
-        getPoint(coordinates.x, coordinates.y + radius), 
-        getPoint(coordinates.x + radius, coordinates.y + diameter)
-      ]
+    const arcStartPoint = {
+      [topLeftCorner]: getPoint(coordinates.x + radius, coordinates.y),
+      [topRightCorner]: getPoint(coordinates.x + diameter, coordinates.y + radius),
+      [bottomRightCorner]: getPoint(coordinates.x + radius, coordinates.y + diameter),
+      [bottomLeftCorner]: getPoint(coordinates.x, coordinates.y + radius),
     }[corner]
 
     this.context.fillStyle = color
     this.context.moveTo(startPoint.x, startPoint.y)
-
-    points.forEach((point, index) => {
-      this.context.lineTo(point.x, point.y)
-      if (index === points.length - 1) return
-
-      this.context.lineTo(startPoint.x, startPoint.y)
-    })
-
+    this.context.lineTo(arcStartPoint.x, arcStartPoint.y)
     this.context.arc(centerCoordinates.x, centerCoordinates.y, radius, startAngle, endAngle, false)
-    
+    this.context.lineTo(startPoint.x, startPoint.y)
     this.context.closePath()
     this.context.fill()
   }
