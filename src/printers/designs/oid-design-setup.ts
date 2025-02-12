@@ -47,7 +47,7 @@ export class OilDesignSetup implements DesignSetup {
       if (neighbors.topLeft === BLACK) filledCorners.push(topLeftCorner)
       if (neighbors.topRight === BLACK) filledCorners.push(topRightCorner)
       if (neighbors.bottomRight === BLACK) filledCorners.push(bottomRightCorner)
-      if (neighbors.bottomLeft === BLACK && neighbors.left === BLACK) filledCorners.push(bottomLeftCorner)
+      if (neighbors.bottomLeft === BLACK) filledCorners.push(bottomLeftCorner)
       
       filledCorners.forEach(corner => drawer.drawOuterCorner(coordinate, diameter, corner, printerConfig.darkColor))
     })
