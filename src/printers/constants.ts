@@ -24,6 +24,8 @@ export const topRightCorner: Corner = 'top-right'
 export const bottomRightCorner: Corner = 'bottom-right'
 export const bottomLeftCorner: Corner = 'bottom-left'
 
+export const allCorners: Corner[] = [topLeftCorner, topRightCorner, bottomRightCorner, bottomLeftCorner]
+
 export const designClassic: DesignToken = 'classic'
 export const designCircles: DesignToken = 'circles'
 export const designLiquid: DesignToken = 'liquid'

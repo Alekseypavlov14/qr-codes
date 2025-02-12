@@ -1,5 +1,7 @@
+import { allCorners, bottomLeftCorner, bottomRightCorner, topLeftCorner, topRightCorner } from './constants'
 import { DrawerConfig } from './interfaces/drawer-config'
 import { Coordinates } from '../core/shared/types/coordinates'
+import { Neighbors } from './types/neighbors'
 import { getPoint } from '../core/shared/utils/coordinates'
 import { getSize } from '../core/shared/utils/sizes'
 import { Matrix } from '../core/shared/types/matrix'
@@ -8,6 +10,13 @@ import { Corner } from './types/corner'
 import { Color } from './types/color'
 import { Size } from '../core/shared/types/size'
 
+export interface CallbackOptions {
+  coordinate: Coordinates
+  sizes: Size
+  value: Module
+  neighbors: Neighbors
+}
+
 export class Drawer {
   private readonly config: DrawerConfig
 
@@ -15,167 +24,83 @@ export class Drawer {
     this.config = config
   }
 
-  drawMatrix(coordinates: Coordinates, matrix: Matrix<number>, value: Module, color: Color) {
-    for (let row = 0; row < matrix.length; row++) {
-      for (let column = 0; column < matrix[0].length; column++) {
-        if (matrix[row][column] !== value) continue
+  drawMatrixWithSquares(coordinates: Coordinates, matrix: Matrix<number>, value: Module, color: Color) {
+    this.styleMatrix(coordinates, matrix, ({ coordinate, sizes, value: matrixValue }) => {
+      if (matrixValue !== value) return
 
-        const coordinate = getPoint(column * this.config.cellSize + coordinates.x, row * this.config.cellSize + coordinates.y)
-        const size = getSize(this.config.cellSize, this.config.cellSize)
-
-        this.config.engine.drawRectangle(coordinate, size, color)
-      }
-    }
+      this.drawRectangle(coordinate, sizes, color)
+    })
   }
+
   drawMatrixWithCircles(coordinates: Coordinates, matrix: Matrix<number>, value: Module, color: Color) {
+    this.styleMatrix(coordinates, matrix, ({ coordinate, sizes, value: matrixValue }) => {
+      if (matrixValue !== value) return
+      
+      const diameter = sizes.width
+      this.drawCircle(coordinate, diameter, color)
+    })
+  }
+
+  drawMatrixWithConnectedCircles(coordinates: Coordinates, matrix: Matrix<number>, value: Module, color: Color, inverseColor: Color) {
+    this.styleMatrix(coordinates, matrix, ({ coordinate, value: matrixValue, sizes, neighbors }) => {
+      if (matrixValue !== value) return 
+
+      const diameter = sizes.width
+      const filledCorners: Corner[] = []
+
+      if (neighbors.top === value) filledCorners.push(topLeftCorner, topRightCorner)
+      if (neighbors.right === value) filledCorners.push(topRightCorner, bottomRightCorner)
+      if (neighbors.bottom === value) filledCorners.push(bottomLeftCorner, bottomRightCorner)
+      if (neighbors.left === value) filledCorners.push(topLeftCorner, bottomLeftCorner)
+      
+      const restCorners = allCorners.filter(corner => !filledCorners.includes(corner))
+
+      this.drawCircle(coordinate, diameter, color)
+      
+      filledCorners.forEach(corner => this.drawOuterCorner(coordinate, diameter, corner, color))
+      restCorners.forEach(corner => this.drawOuterCorner(coordinate, diameter, corner, inverseColor))
+    })
+  }
+
+  drawMatrixOuterCorners(coordinates: Coordinates, matrix: Matrix<number>, values: Module[], corners: Corner[], color: Color) {
+    this.styleMatrix(coordinates, matrix, ({ coordinate, sizes, value }) => {
+      if (!values.includes(value)) return
+
+      corners.forEach(corner => {
+        this.drawOuterCorner(coordinate, sizes.width, corner, color)
+      })
+    })
+  }
+
+  styleMatrix(coordinates: Coordinates, matrix: Matrix<number>, callback: (options: CallbackOptions) => void) {
     for (let row = 0; row < matrix.length; row++) {
       for (let column = 0; column < matrix[0].length; column++) {
-        if (matrix[row][column] !== value) continue
-
         const coordinate = getPoint(column * this.config.cellSize + coordinates.x, row * this.config.cellSize + coordinates.y)
+        const sizes = getSize(this.config.cellSize, this.config.cellSize)
+        const value = matrix[row][column]
 
-        this.config.engine.drawCircle(coordinate, this.config.cellSize, color)
+        const neighbors: Neighbors = {
+          top: matrix?.[row - 1]?.[column] ?? null,
+          topRight: matrix?.[row - 1]?.[column + 1] ?? null,
+          right: matrix?.[row]?.[column + 1] ?? null,
+          bottomRight: matrix?.[row + 1]?.[column + 1] ?? null,
+          bottom: matrix?.[row + 1]?.[column] ?? null,
+          bottomLeft: matrix?.[row + 1]?.[column - 1] ?? null,
+          left: matrix?.[row]?.[column - 1] ?? null,
+          topLeft: matrix?.[row - 1]?.[column - 1] ?? null,
+        }
+
+        const options: CallbackOptions = {
+          coordinate,
+          sizes,
+          value,
+          neighbors
+        }
+ 
+        callback(options)
       }
     }
   }
-
-  connectConsecutiveCircles(coordinates: Coordinates, matrix: Matrix<number>, value: Module, color: Color) {
-    const diameter = this.config.cellSize
-
-    for (let row = 0; row < matrix.length; row++) {
-      for (let column = 0; column < matrix[0].length; column++) {
-        const module = matrix[row][column]
-        if (module !== value) continue
-
-        // compare with top => fill top half
-        const topModule = matrix?.[row - 1]?.[column]
-        if (topModule === value) {
-          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
-          this.config.engine.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
-        }
-
-        // compare with right => fill right half
-        const rightModule = matrix?.[row]?.[column + 1]
-        if (rightModule === value) {
-          const coordinate = getPoint(column * diameter + diameter / 2 + coordinates.x, row * diameter + coordinates.y)
-          this.config.engine.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
-        }
-
-        // compare with bottom => fill bottom half
-        const bottomModule = matrix?.[row + 1]?.[column]
-        if (bottomModule === value) {
-          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + diameter / 2 + coordinates.y)
-          this.config.engine.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
-        }
-
-        // compare with left => fill left half
-        const leftModule = matrix?.[row]?.[column - 1]
-        if (leftModule === value) {
-          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
-          this.config.engine.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
-        }
-      }
-    }
-  }
-  connectEdgeCircles(coordinates: Coordinates, matrix: Matrix<number>, value: Module, color: Color) {
-    const diameter = this.config.cellSize
-
-    const minCoordinate = 0
-    const maxCoordinate = matrix.length - 1
-    
-    for (let row = 0; row < matrix.length; row++) {
-      for (let column = 0; column < matrix[0].length; column++) {
-        const module = matrix[row][column]
-        if (module !== value) continue
-
-        if (
-          row !== minCoordinate && row !== maxCoordinate && 
-          column !== minCoordinate && column !== maxCoordinate
-        ) continue
-
-        const isTopModule = row === minCoordinate
-        const isRightModule = column === maxCoordinate
-        const isBottomModule = row === maxCoordinate
-        const isLeftModule = column === minCoordinate
-
-        if (isTopModule) {
-          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
-          this.config.engine.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
-        }
-        if (isRightModule) {
-          const coordinate = getPoint(column * diameter + diameter / 2 + coordinates.x, row * diameter + coordinates.y)
-          this.config.engine.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
-        }
-        if (isBottomModule) {
-          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + diameter / 2 + coordinates.y)
-          this.config.engine.drawRectangle(coordinate, getSize(diameter, diameter / 2), color)
-        }
-        if (isLeftModule) {
-          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
-          this.config.engine.drawRectangle(coordinate, getSize(diameter / 2, diameter), color)
-        }
-      }
-    }
-  }
-
-  roundCorners(coordinates: Coordinates, matrix: Matrix<number>, value: Module, moduleColor: Color, roundColor: Color) {
-    const diameter = this.config.cellSize
-
-    for (let row = 0; row < matrix.length; row++) {
-      for (let column = 0; column < matrix[0].length; column++) {
-        const module = matrix[row][column]
-        if (module !== value) continue
-
-        const topModule = matrix?.[row - 1]?.[column]
-        const topRightModule = matrix?.[row - 1]?.[column + 1]
-        const rightModule = matrix?.[row]?.[column + 1]
-        const bottomRightModule = matrix?.[row + 1]?.[column + 1]
-        const bottomModule = matrix?.[row + 1]?.[column]
-        const bottomLeftModule = matrix?.[row + 1]?.[column - 1]
-        const leftModule = matrix?.[row]?.[column - 1]
-        const topLeftModule = matrix?.[row - 1]?.[column - 1]
-        
-        const isSurroundedByOppositeColorFromTopRight = topModule !== value && topRightModule !== value && rightModule !== value
-        const isSurroundedByOppositeColorFromBottomRight = bottomModule !== value && bottomRightModule !== value && rightModule !== value
-        const isSurroundedByOppositeColorFromTopLeft = topModule !== value && topLeftModule !== value && leftModule !== value
-        const isSurroundedByOppositeColorFromBottomLeft = bottomModule !== value && bottomLeftModule !== value && leftModule !== value
-
-        const cornerRectangleSize = getSize(diameter / 2, diameter / 2)
-
-        const circleCoordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
-
-        if (isSurroundedByOppositeColorFromTopRight) {
-          const coordinate = getPoint(column * diameter + diameter / 2 + coordinates.x, row * diameter + coordinates.y)
-          this.config.engine.drawRectangle(coordinate, cornerRectangleSize, roundColor)
-        }
-
-        if (isSurroundedByOppositeColorFromBottomRight) {
-          const coordinate = getPoint(column * diameter + diameter / 2 + coordinates.x, row * diameter + diameter / 2 + coordinates.y)
-          this.config.engine.drawRectangle(coordinate, cornerRectangleSize, roundColor)
-        }
-
-        if (isSurroundedByOppositeColorFromBottomLeft) {
-          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + diameter / 2 + coordinates.y)
-          this.config.engine.drawRectangle(coordinate, cornerRectangleSize, roundColor)
-        }
-
-        if (isSurroundedByOppositeColorFromTopLeft) {
-          const coordinate = getPoint(column * diameter + coordinates.x, row * diameter + coordinates.y)
-          this.config.engine.drawRectangle(coordinate, cornerRectangleSize, roundColor)
-        }
-
-        this.config.engine.drawCircle(circleCoordinate, diameter, moduleColor)
-      }
-    }
-  }
-
-  fillBackground(color: Color) {
-    const backgroundCoordinate = getPoint(0, 0)
-    const backgroundSize = getSize(this.config.width, this.config.height)
-
-    this.config.engine.drawRectangle(backgroundCoordinate, backgroundSize, color)
-  }
-
   drawFrameborder(dimension: number, width: number, color: Color) {
     const topRectCoordinates = getPoint(0, 0)
     const bottomRectangle = getPoint(0, dimension - width)
