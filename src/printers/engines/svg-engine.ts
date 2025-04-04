@@ -17,8 +17,6 @@ export class SVGEngine implements Engine {
     rect.setAttribute('width', size.width.toString())
     rect.setAttribute('height', size.height.toString())
     rect.setAttribute('fill', color)
-    rect.setAttribute('stroke', color)
-    rect.setAttribute('stroke-width', STROKE_WIDTH.toString())
     
     this.context.appendChild(rect)
   }
@@ -30,8 +28,6 @@ export class SVGEngine implements Engine {
     circle.setAttribute('cy', (coordinates.y + diameter / 2).toString())
     circle.setAttribute('r', (diameter / 2).toString())
     circle.setAttribute('fill', color)
-    circle.setAttribute('stroke', color)
-    circle.setAttribute('stroke-width', STROKE_WIDTH.toString())
     
     this.context.appendChild(circle)
   }
