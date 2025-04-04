@@ -19,6 +19,8 @@ export const DEFAULT_RESOLUTION_INCREASE_COEFFICIENT = 5
 export const BLACK_COLOR: Color = '#000'
 export const WHITE_COLOR: Color = '#fff'
 
+export const STROKE_WIDTH = 1
+
 export const topLeftCorner: Corner = 'top-left'
 export const topRightCorner: Corner = 'top-right'
 export const bottomRightCorner: Corner = 'bottom-right'
