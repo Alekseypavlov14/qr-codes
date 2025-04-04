@@ -1,4 +1,4 @@
-import { bottomLeftCorner, bottomRightCorner, STROKE_WIDTH, topLeftCorner, topRightCorner } from '../constants'
+import { bottomLeftCorner, bottomRightCorner, topLeftCorner, topRightCorner } from '../constants'
 import { Coordinates } from '../../core/shared/types/coordinates'
 import { getPoint } from '../../core/shared/utils/coordinates'
 import { Corner } from '../types/corner'
