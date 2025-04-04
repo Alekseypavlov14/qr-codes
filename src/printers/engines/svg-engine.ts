@@ -77,8 +77,6 @@ export class SVGEngine implements Engine {
   
     path.setAttribute("d", pathData)
     path.setAttribute("fill", color)
-    path.setAttribute("stroke", color)
-    path.setAttribute("stroke-width", STROKE_WIDTH.toString())
     
     this.context.appendChild(path)
   }

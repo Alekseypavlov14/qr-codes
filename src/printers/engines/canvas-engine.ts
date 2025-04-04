@@ -58,8 +58,6 @@ export class CanvasEngine implements Engine {
     }[corner]
 
     this.context.fillStyle = color
-    this.context.strokeStyle = color
-    this.context.lineWidth = STROKE_WIDTH
 
     this.context.moveTo(startPoint.x, startPoint.y)
     this.context.beginPath()
@@ -68,6 +66,5 @@ export class CanvasEngine implements Engine {
     this.context.lineTo(startPoint.x, startPoint.y)
     this.context.closePath()
     this.context.fill()
-    this.context.stroke()
   }
 }
