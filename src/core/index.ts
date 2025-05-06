@@ -1,6 +1,10 @@
 export * from './qr-code'
 
 export {
+  Version,
+  Mask,
+  ErrorCorrection,
+
   ERROR_CORRECTION_H,
   ERROR_CORRECTION_Q,
   ERROR_CORRECTION_M,
