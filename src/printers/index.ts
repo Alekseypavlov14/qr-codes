@@ -5,6 +5,7 @@ export * from './types/design'
 export * from './interfaces/design-setup'
 export * from './interfaces/printer-config'
 export * from './types/injector'
+export * from './types/engine'
 export * from './types/color'
 
 export {
@@ -19,4 +20,3 @@ export {
   enginesList
 } from './constants'
 
-export { EngineToken } from './types/engine'
