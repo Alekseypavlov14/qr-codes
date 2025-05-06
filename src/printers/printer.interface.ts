@@ -1,10 +1,13 @@
-import { QRCodeContent } from '../core/shared/types/content'
+import { QRCodeContent } from '../core'
 import { DesignToken } from './types/design'
 import { EngineToken } from './types/engine'
 import { Injector } from './types/injector'
 
 export interface IPrinter {
-  print(matrix: QRCodeContent): Injector
+  getInjectorByElement<T extends HTMLElement>(element: T): Injector
+  getInjectorBySelector(selector: string): Injector
+
+  print<T extends HTMLElement>(element: T, content: QRCodeContent): void
 
   setLightColor(color: string): void
   setDarkColor(color: string): void

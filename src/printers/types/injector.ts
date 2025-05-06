@@ -1,1 +1,3 @@
-export type Injector = (container: HTMLElement) => void
+import { QRCodeContent } from '../../core'
+
+export type Injector = (content: QRCodeContent) => void

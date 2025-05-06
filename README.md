@@ -50,10 +50,13 @@ const printer = new Printer({
   darkColor: '#000000',
 })
 
-printer.print(qrMatrix)
+const inject = printer.getInjectorBySelector('#container')
+inject(qrMatrix)
 ```
 
-[See Configuration Options](#configuration-options)
+[See Printer Config Options](#printerconfig) for configuring ``Printer``
+
+[See Injection Options](#injection-options)
 
 ---
 
@@ -67,7 +70,7 @@ const downloader = new Downloader({
   fileType: fileTypePNG
 })
 
-downloader.download(canvasElement)
+downloader.downloadFromCanvas(canvasElement)
 ```
 
 [See Configuration Options](#configuration-options)
@@ -81,6 +84,10 @@ downloader.download(canvasElement)
 |------------------------|---------------------|-----------------------------------------------|
 | `message`              | `string`           | The message to encode in the QR code.         |
 | `minimalErrorCorrection` | `ErrorCorrection` | (Optional) Error correction level (`L`, `M`, `Q`, `H`). |
+
+### Injection options
+- `getInjectorBySelector(selector: string)` - returns injection callback by selector
+- `getInjectorByElement(element: HTMLElement)` - returns injection callback by element
 
 ### PrinterConfig
 | Property                     | Type      | Description                                      |

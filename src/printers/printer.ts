@@ -1,4 +1,5 @@
-import { defaultPrinterConfig, mapDesignToSetup, mapOutputToProcess } from './constants'
+import { defaultPrinterConfig, mapOutputToProcess } from './constants'
+import { CONTAINER_IS_NOT_FOUND_ERROR } from '../shared/errors'
 import { normalizeConfig } from './utils/config'
 import { QRCodeContent } from '../core/shared/types/content'
 import { PrinterConfig } from './interfaces/printer-config'
@@ -6,7 +7,6 @@ import { DesignToken } from './types/design'
 import { EngineToken } from './types/engine'
 import { HTML_UTILS } from '../shared/utils/html'
 import { IPrinter } from './printer.interface'
-import { Injector } from './types/injector'
 import { Color } from './types/color'
 
 export class Printer implements IPrinter {
@@ -16,14 +16,22 @@ export class Printer implements IPrinter {
     this.config = normalizeConfig(config)
   }
 
-  print(content: QRCodeContent): Injector {
-    return <T extends HTMLElement>(container: T) => {
-      const process = mapOutputToProcess[this.config.output]
-      const element = process.run(this.config, container, content)
+  getInjectorByElement<T extends HTMLElement>(element: T) {
+    return (content: QRCodeContent) => this.print(element, content)
+  }
+  getInjectorBySelector(selector: string) {
+    const element = document.querySelector<HTMLElement>(selector)
+    if (!element) throw CONTAINER_IS_NOT_FOUND_ERROR
 
-      HTML_UTILS.clearElement(container)
-      HTML_UTILS.insertElement(container, element)
-    }
+    return (content: QRCodeContent) => this.print(element, content)
+  }
+
+  print<T extends HTMLElement>(container: T, content: QRCodeContent): void {
+    const process = mapOutputToProcess[this.config.output]
+    const element = process.run(this.config, container, content)
+
+    HTML_UTILS.clearElement(container)
+    HTML_UTILS.insertElement(container, element)
   }
   
   setLightColor(color: Color): void {
