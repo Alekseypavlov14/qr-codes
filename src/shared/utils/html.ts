@@ -6,6 +6,9 @@ export class HTMLUtils {
   insertElement(container: HTMLElement, element: Element) {
     container.appendChild(element)
   }
+  clearElement(element: HTMLElement) {
+    element.innerHTML = ''
+  }
 
   createCanvas(): HTMLCanvasElement {
     const canvas = document.createElement('canvas')

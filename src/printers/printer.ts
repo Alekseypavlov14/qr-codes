@@ -21,6 +21,7 @@ export class Printer implements IPrinter {
       const process = mapOutputToProcess[this.config.output]
       const element = process.run(this.config, container, content)
 
+      HTML_UTILS.clearElement(container)
       HTML_UTILS.insertElement(container, element)
     }
   }
