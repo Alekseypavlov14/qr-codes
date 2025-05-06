@@ -75,6 +75,8 @@ downloader.downloadFromCanvas(canvasElement)
 
 [See Configuration Options](#configuration-options)
 
+[See Download Options](#download-options)
+
 ---
 
 ## Configuration Options
@@ -104,6 +106,12 @@ downloader.downloadFromCanvas(canvasElement)
 |---------------|-----------|----------------------------------------------|
 | `fileName`    | `string`  | The name of the downloaded file.             |
 | `fileType`    | `FileType`| The file format (e.g., `png`, `jpeg`, `webp`).|
+
+### Download options
+- `downloadFromCanvas(canvas: HTMLCanvasElement): void`
+- `downloadFromCanvasContainer(container: HTMLElement): void`
+- `downloadFromSVG(svg: SVGSVGElement): void`
+- `downloadFromSVGContainer(container: HTMLElement): void`
 
 ---
 

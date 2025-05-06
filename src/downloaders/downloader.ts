@@ -1,7 +1,7 @@
+import { ELEMENT_IS_NOT_FOUND_ERROR, ELEMENT_TYPE_ERROR } from '../shared/errors'
 import { getFileNameByNameAndExtension } from './utils/file-name'
 import { mapFileExtensionToMimeType } from './utils/file-type'
 import { defaultConfig, FileType } from './constants'
-import { ELEMENT_TYPE_ERROR } from '../shared/errors'
 import { normalizeConfig } from './utils/config'
 import { IDownloader } from './downloader.interface'
 import { HTML_UTILS } from '../shared/utils/html'
@@ -24,6 +24,12 @@ export class Downloader implements IDownloader {
 
     HTML_UTILS.downloadFile(fileName, imageURL)
   }
+  downloadFromCanvasContainer(container: HTMLElement): void {
+    const canvas = container.querySelector('canvas')
+    if (!canvas) throw ELEMENT_IS_NOT_FOUND_ERROR
+
+    return this.downloadFromCanvas(canvas)
+  }
 
   downloadFromSVG(svg: SVGSVGElement) {
     if (!HTML_UTILS.isElementOfType(svg, SVGSVGElement)) throw ELEMENT_TYPE_ERROR
@@ -33,6 +39,12 @@ export class Downloader implements IDownloader {
     const fileName = getFileNameByNameAndExtension(this.config.fileName, this.config.fileType)
 
     HTML_UTILS.downloadFile(fileName, imageURL)
+  }
+  downloadFromSVgContainer(container: HTMLElement): void {
+    const svg = container.querySelector('svg')
+    if (!svg) throw ELEMENT_IS_NOT_FOUND_ERROR
+
+    this.downloadFromSVG(svg)
   }
 
   setFileName(fileName: string) {
