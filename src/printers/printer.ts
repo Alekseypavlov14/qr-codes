@@ -1,13 +1,13 @@
 import { defaultPrinterConfig, mapDesignToSetup, mapOutputToProcess } from './constants'
 import { normalizeConfig } from './utils/config'
+import { QRCodeContent } from '../core/shared/types/content'
 import { PrinterConfig } from './interfaces/printer-config'
 import { DesignToken } from './types/design'
+import { EngineToken } from './types/engine'
 import { HTML_UTILS } from '../shared/utils/html'
 import { IPrinter } from './printer.interface'
 import { Injector } from './types/injector'
-import { Matrix } from '../core/shared/types/matrix'
 import { Color } from './types/color'
-import { EngineToken } from './types/engine'
 
 export class Printer implements IPrinter {
   private readonly config: Required<PrinterConfig>
@@ -16,7 +16,7 @@ export class Printer implements IPrinter {
     this.config = normalizeConfig(config)
   }
 
-  print(content: Matrix<number>): Injector {
+  print(content: QRCodeContent): Injector {
     return <T extends HTMLElement>(container: T) => {
       const process = mapOutputToProcess[this.config.output]
       const element = process.run(this.config, container, content)

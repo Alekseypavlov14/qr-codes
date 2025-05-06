@@ -1,4 +1,5 @@
 import { allCorners, bottomLeftCorner, bottomRightCorner, topLeftCorner, topRightCorner } from './constants'
+import { QRCodeContent } from '../core/shared/types/content'
 import { DrawerConfig } from './interfaces/drawer-config'
 import { Coordinates } from '../core/shared/types/coordinates'
 import { Neighbors } from './types/neighbors'
@@ -24,7 +25,7 @@ export class Drawer {
     this.config = config
   }
 
-  drawMatrixWithSquares(coordinates: Coordinates, matrix: Matrix<number>, value: Module, color: Color) {
+  drawMatrixWithSquares(coordinates: Coordinates, matrix: QRCodeContent, value: Module, color: Color) {
     this.styleMatrix(coordinates, matrix, ({ coordinate, sizes, value: matrixValue }) => {
       if (matrixValue !== value) return
 
@@ -32,7 +33,7 @@ export class Drawer {
     })
   }
 
-  drawMatrixWithCircles(coordinates: Coordinates, matrix: Matrix<number>, value: Module, color: Color) {
+  drawMatrixWithCircles(coordinates: Coordinates, matrix: QRCodeContent, value: Module, color: Color) {
     this.styleMatrix(coordinates, matrix, ({ coordinate, sizes, value: matrixValue }) => {
       if (matrixValue !== value) return
       
@@ -41,7 +42,7 @@ export class Drawer {
     })
   }
 
-  drawMatrixWithConnectedCircles(coordinates: Coordinates, matrix: Matrix<number>, value: Module, color: Color, inverseColor: Color) {
+  drawMatrixWithConnectedCircles(coordinates: Coordinates, matrix: QRCodeContent, value: Module, color: Color, inverseColor: Color) {
     this.styleMatrix(coordinates, matrix, ({ coordinate, value: matrixValue, sizes, neighbors }) => {
       if (matrixValue !== value) return 
 
@@ -62,7 +63,7 @@ export class Drawer {
     })
   }
 
-  drawMatrixOuterCorners(coordinates: Coordinates, matrix: Matrix<number>, values: Module[], corners: Corner[], color: Color) {
+  drawMatrixOuterCorners(coordinates: Coordinates, matrix: QRCodeContent, values: Module[], corners: Corner[], color: Color) {
     this.styleMatrix(coordinates, matrix, ({ coordinate, sizes, value }) => {
       if (!values.includes(value)) return
 
@@ -72,7 +73,7 @@ export class Drawer {
     })
   }
 
-  styleMatrix(coordinates: Coordinates, matrix: Matrix<number>, callback: (options: CallbackOptions) => void) {
+  styleMatrix(coordinates: Coordinates, matrix: QRCodeContent, callback: (options: CallbackOptions) => void) {
     for (let row = 0; row < matrix.length; row++) {
       for (let column = 0; column < matrix[0].length; column++) {
         const coordinate = getPoint(column * this.config.cellSize + coordinates.x, row * this.config.cellSize + coordinates.y)

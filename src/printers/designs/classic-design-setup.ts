@@ -1,12 +1,12 @@
 import { PrinterConfig } from '../interfaces/printer-config'
+import { QRCodeContent } from '../../core/shared/types/content'
 import { BLACK, WHITE } from '../../core/shared/constants'
 import { DesignSetup } from '../interfaces/design-setup'
 import { getPoint } from '../../core/shared/utils/coordinates'
-import { Matrix } from '../../core/shared/types/matrix'
 import { Drawer } from '../drawer'
 
 export class ClassicDesignSetup implements DesignSetup {
-  print(printerConfig: Required<PrinterConfig>, drawer: Drawer, content: Matrix<number>): void {
+  print(printerConfig: Required<PrinterConfig>, drawer: Drawer, content: QRCodeContent): void {
     const config = drawer.getConfig()
     
     const frameborderWidth = config.cellSize * printerConfig.paddingCells

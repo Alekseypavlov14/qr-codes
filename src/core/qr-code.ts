@@ -3,6 +3,7 @@ import { DEFAULT_ERROR_CORRECTION, DEFAULT_MASK } from './configuration/constant
 import { BYTE_MODE, ErrorCorrection, Mode } from './configuration/types'
 import { CONTENT_ENCODER } from './content/encoder'
 import { GRAPHICS_SETUP } from './content/setup'
+import { QRCodeContent } from './shared/types/content'
 import { MASK_PATTERN } from './content/mask'
 import { CONTENT_PATH } from './content/path'
 import { TERMINATOR } from './content/constants'
@@ -11,7 +12,6 @@ import { CONVERTER } from './shared/converter'
 import { VERSION } from './configuration/version'
 import { compose } from './shared/utils/array'
 import { FIGURE } from './graphics/utils/figure'
-import { Matrix } from './shared/types/matrix'
 import { Board } from './graphics/types/board.interface'
 import { BOARD } from './graphics/utils/board'
 import { MODE } from './configuration/mode'
@@ -25,7 +25,7 @@ export interface QRCodeConfig {
 export class QRCode {
   private static readonly DEFAULT_MODE = BYTE_MODE
 
-  static create(options: QRCodeConfig): Matrix<number> {
+  static create(options: QRCodeConfig): QRCodeContent {
     // normalize options
     const { message, minimalErrorCorrection } = this.normalizeOptions(options)
     this.validateMessage(this.DEFAULT_MODE, message)

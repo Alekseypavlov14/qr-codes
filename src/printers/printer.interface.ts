@@ -1,10 +1,10 @@
+import { QRCodeContent } from '../core/shared/types/content'
 import { DesignToken } from './types/design'
 import { EngineToken } from './types/engine'
 import { Injector } from './types/injector'
-import { Matrix } from '../core/shared/types/matrix'
 
 export interface IPrinter {
-  print(matrix: Matrix<number>): Injector
+  print(matrix: QRCodeContent): Injector
 
   setLightColor(color: string): void
   setDarkColor(color: string): void

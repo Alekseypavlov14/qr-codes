@@ -1,14 +1,14 @@
 import { mapDesignToSetup } from '../constants'
 import { PrinterConfig } from '../interfaces/printer-config'
+import { QRCodeContent } from '../../core/shared/types/content'
 import { HTML_UTILS } from '../../shared/utils/html'
 import { SVGEngine } from '../engines/svg-engine'
 import { Process } from '../interfaces/process'
 import { getSize } from '../../core/shared/utils/sizes'
-import { Matrix } from '../../core/shared/types/matrix'
 import { Drawer } from '../drawer'
 
 export class SVGProcess implements Process<SVGSVGElement> {
-  run(printerConfig: Required<PrinterConfig>, container: HTMLElement, content: Matrix<number>): SVGSVGElement {
+  run(printerConfig: Required<PrinterConfig>, container: HTMLElement, content: QRCodeContent): SVGSVGElement {
     const containerSize = HTML_UTILS.getElementMinSize(container)
 
     const matrixSize = content.length

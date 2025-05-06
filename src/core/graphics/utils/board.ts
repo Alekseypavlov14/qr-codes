@@ -1,10 +1,10 @@
 import { getMatrixOf, insert } from '../../shared/utils/matrix'
-import { Matrix } from '../../shared/types/matrix'
+import { QRCodeContent } from '../../shared/types/content'
 import { Board } from '../types/board.interface'
 import { WHITE } from '../../shared/constants'
 
 export class BoardUtils {
-  getContentMatrix(board: Board): Matrix<number> {
+  getContentMatrix(board: Board): QRCodeContent {
     const boardMatrix = getMatrixOf(board.dimension, board.dimension, WHITE)
 
     board.figures.forEach(figure => {

@@ -17,3 +17,5 @@ export {
 } from './configuration/types'
 
 export { ERROR_CORRECTION_ASCENDING_LIST } from './configuration/constants'
+
+export { QRCodeContent } from './shared/types/content'
