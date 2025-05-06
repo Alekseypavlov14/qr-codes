@@ -18,3 +18,5 @@ export {
   svgEngine,
   enginesList
 } from './constants'
+
+export { EngineToken } from './types/engine'
