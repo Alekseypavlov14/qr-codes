@@ -90,6 +90,9 @@ downloader.downloadFromCanvas(canvasElement)
 ### Injection options
 - `getInjectorBySelector(selector: string)` - returns injection callback by selector
 - `getInjectorByElement(element: HTMLElement)` - returns injection callback by element
+- `injectContent<T extends HTMLElement>(container: T, content: QRCodeContent): void` - injects QR Code content to specified container (fills container)
+- `injectElement<C extends HTMLElement, E extends Element>(container: C, element: E): void` - injects Graphic Element (Canvas or SVG) to container (fills container)
+- `print<T extends Element>(content: QRCodeContent, size?: number): T` - creates Graphic Element (Canvas or SVG) with given size
 
 ### PrinterConfig
 | Property                     | Type      | Description                                      |

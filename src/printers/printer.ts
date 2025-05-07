@@ -1,4 +1,4 @@
-import { defaultPrinterConfig, mapOutputToProcess } from './constants'
+import { DEFAULT_QR_CODE_SIZE, defaultPrinterConfig, mapOutputToProcess } from './constants'
 import { CONTAINER_IS_NOT_FOUND_ERROR } from '../shared/errors'
 import { normalizeConfig } from './utils/config'
 import { QRCodeContent } from '../core/shared/types/content'
@@ -17,21 +17,32 @@ export class Printer implements IPrinter {
   }
 
   getInjectorByElement<T extends HTMLElement>(element: T) {
-    return (content: QRCodeContent) => this.print(element, content)
+    return (content: QRCodeContent) => this.injectContent(element, content)
   }
   getInjectorBySelector(selector: string) {
     const element = document.querySelector<HTMLElement>(selector)
     if (!element) throw CONTAINER_IS_NOT_FOUND_ERROR
 
-    return (content: QRCodeContent) => this.print(element, content)
+    return (content: QRCodeContent) => this.injectContent(element, content)
   }
 
-  print<T extends HTMLElement>(container: T, content: QRCodeContent): void {
-    const process = mapOutputToProcess[this.config.output]
-    const element = process.run(this.config, container, content)
+  injectContent<T extends HTMLElement>(container: T, content: QRCodeContent): void {
+    const containerSize = HTML_UTILS.getElementMinSize(container)
+    const element = this.print(content, containerSize)
 
     HTML_UTILS.clearElement(container)
     HTML_UTILS.insertElement(container, element)
+  }
+  injectElement<C extends HTMLElement, E extends Element>(container: C, element: E): void {
+    HTML_UTILS.clearElement(container)
+    HTML_UTILS.insertElement(container, element)
+  }
+
+  print<T extends Element>(content: QRCodeContent, size: number = DEFAULT_QR_CODE_SIZE): T {
+    const process = mapOutputToProcess[this.config.output]
+    const element = process.run(this.config, size, content)
+
+    return element as T
   }
   
   setLightColor(color: Color): void {

@@ -8,9 +8,7 @@ import { getSize } from '../../core/shared/utils/sizes'
 import { Drawer } from '../drawer'
 
 export class SVGProcess implements Process<SVGSVGElement> {
-  run(printerConfig: Required<PrinterConfig>, container: HTMLElement, content: QRCodeContent): SVGSVGElement {
-    const containerSize = HTML_UTILS.getElementMinSize(container)
-
+  run(printerConfig: Required<PrinterConfig>, containerSize: number, content: QRCodeContent): SVGSVGElement {
     const matrixSize = content.length
     const cellsAmount = matrixSize + 2 * printerConfig.paddingCells
     

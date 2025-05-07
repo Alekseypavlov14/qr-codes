@@ -16,6 +16,8 @@ import { Color } from './types/color'
 export const DEFAULT_PADDING_CELLS = 3
 export const DEFAULT_RESOLUTION_INCREASE_COEFFICIENT = 5
 
+export const DEFAULT_QR_CODE_SIZE = 300
+
 export const BLACK_COLOR: Color = '#000'
 export const WHITE_COLOR: Color = '#fff'
 

@@ -7,9 +7,7 @@ import { Process } from '../interfaces/process'
 import { Drawer } from '../drawer'
 
 export class CanvasProcess implements Process<HTMLCanvasElement> {
-  run(printerConfig: Required<PrinterConfig>, container: HTMLElement, content: QRCodeContent): HTMLCanvasElement {
-    const containerSize = HTML_UTILS.getElementMinSize(container)
-    
+  run(printerConfig: Required<PrinterConfig>, containerSize: number, content: QRCodeContent): HTMLCanvasElement {
     const canvas = HTML_UTILS.createCanvas()
     const context = HTML_UTILS.getCanvasContext(canvas)
 
