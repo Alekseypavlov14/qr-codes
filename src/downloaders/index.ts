@@ -6,5 +6,6 @@ export {
   fileTypePNG,
   fileTypeJPEG,
   fileTypeWebp,
-  fileTypeSVG
+  fileTypeSVG,
+  FileType
 } from './constants'
