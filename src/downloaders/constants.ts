@@ -1,4 +1,4 @@
-import { Config } from './types/downloader-config'
+import { DownloaderConfig } from './types/downloader-config'
 
 export type FileType = 'png' | 'jpeg' | 'webp' | 'svg'
 
@@ -9,7 +9,7 @@ export const fileTypeSVG: FileType = 'svg'
 
 export const DEFAULT_FILE_NAME = 'qr-code'
 
-export const defaultConfig: Config = {
+export const defaultConfig: DownloaderConfig = {
   fileName: DEFAULT_FILE_NAME,
   fileType: fileTypePNG
 }
