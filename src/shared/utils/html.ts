@@ -3,21 +3,6 @@ import { SVG_MIME_TYPE } from '../../downloaders/constants'
 import { Size } from '../../core/shared/types/size'
 
 export class HTMLUtils {
-  createTemporaryContainer(size: number) {
-    // container to be inserted in DOM
-    const container = document.createElement('div')
-
-    // to setup size
-    container.style.width = `${size}px`
-    container.style.height = `${size}px`
-
-    // to hide element visually
-    container.style.position = 'fixed'
-    container.style.top = `-${size * 2}px`
-
-    return container
-  }
-
   insertElement(container: HTMLElement, element: Element) {
     container.appendChild(element)
   }

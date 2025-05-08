@@ -1,7 +1,7 @@
-import { ELEMENT_IS_NOT_FOUND_ERROR, ELEMENT_TYPE_ERROR } from '../shared/errors'
+import { defaultConfig, FileType, fileTypeJPEG, fileTypePNG, fileTypeSVG, fileTypeWebp } from './constants'
+import { ELEMENT_IS_NOT_FOUND_ERROR, ELEMENT_TYPE_ERROR, FILE_TYPE_ERROR } from '../shared/errors'
 import { getFileNameByNameAndExtension } from './utils/file-name'
 import { mapFileExtensionToMimeType } from './utils/file-type'
-import { defaultConfig, FileType } from './constants'
 import { normalizeConfig } from './utils/config'
 import { IDownloader } from './downloader.interface'
 import { HTML_UTILS } from '../shared/utils/html'
@@ -14,13 +14,19 @@ export class Downloader implements IDownloader {
     this.config = normalizeConfig(config)
   }
 
+  download<T extends Element>(element: T): void {
+    if (this.config.fileType === fileTypeSVG) return this.downloadFromSVG(element as unknown as SVGSVGElement)
+    if ([ fileTypeJPEG, fileTypePNG, fileTypeWebp ].includes(this.config.fileType as FileType)) return this.downloadFromCanvas(element as unknown as HTMLCanvasElement)
+
+    throw FILE_TYPE_ERROR
+  }
+
   downloadFromCanvas(canvas: HTMLCanvasElement) {
     if (!HTML_UTILS.isElementOfType(canvas, HTMLCanvasElement)) throw ELEMENT_TYPE_ERROR
    
+    const fileName = this.getFileName()
     const fileMimeType = mapFileExtensionToMimeType(this.config.fileType)
     const imageURL = HTML_UTILS.getImageURLFromCanvas(canvas, fileMimeType)
-
-    const fileName = getFileNameByNameAndExtension(this.config.fileName, this.config.fileType)
 
     HTML_UTILS.downloadFile(fileName, imageURL)
   }
@@ -34,9 +40,8 @@ export class Downloader implements IDownloader {
   downloadFromSVG(svg: SVGSVGElement) {
     if (!HTML_UTILS.isElementOfType(svg, SVGSVGElement)) throw ELEMENT_TYPE_ERROR
    
+    const fileName = this.getFileName()
     const imageURL = HTML_UTILS.getImageURLFromSVG(svg)
-
-    const fileName = getFileNameByNameAndExtension(this.config.fileName, this.config.fileType)
 
     HTML_UTILS.downloadFile(fileName, imageURL)
   }
@@ -46,6 +51,10 @@ export class Downloader implements IDownloader {
 
     this.downloadFromSVG(svg)
   }
+
+  private getFileName() {
+    return getFileNameByNameAndExtension(this.config.fileName, this.config.fileType)
+  } 
 
   setFileName(fileName: string) {
     this.config.fileName = fileName
