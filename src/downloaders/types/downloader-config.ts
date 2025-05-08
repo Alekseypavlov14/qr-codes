@@ -1,4 +1,4 @@
-export interface Config {
+export interface DownloaderConfig {
   fileName: string
   fileType: string
 }

@@ -63,4 +63,7 @@ export class Printer implements IPrinter {
   setResolutionIncreaseCoefficient(resolutionIncreaseCoefficient: number) {
     this.config.resolutionIncreaseCoefficient = resolutionIncreaseCoefficient
   }
+  getConfig(): Required<PrinterConfig> {
+    return ({ ...this.config })
+  }
 }

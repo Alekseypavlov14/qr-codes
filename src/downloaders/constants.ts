@@ -1,4 +1,4 @@
-import { Config } from './types/config'
+import { Config } from './types/downloader-config'
 
 export type FileType = 'png' | 'jpeg' | 'webp' | 'svg'
 

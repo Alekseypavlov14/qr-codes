@@ -1,7 +1,7 @@
+import { DownloaderConfig } from '../types/downloader-config'
 import { defaultConfig } from '../constants'
-import { Config } from '../types/config'
 
-export function normalizeConfig(config: Partial<Config>): Config {
+export function normalizeConfig(config: Partial<DownloaderConfig>): DownloaderConfig {
   return ({
     fileName: config.fileName ?? defaultConfig.fileName,
     fileType: config.fileType ?? defaultConfig.fileType

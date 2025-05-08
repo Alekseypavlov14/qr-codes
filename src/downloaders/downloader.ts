@@ -2,15 +2,15 @@ import { defaultConfig, FileType, fileTypeJPEG, fileTypePNG, fileTypeSVG, fileTy
 import { ELEMENT_IS_NOT_FOUND_ERROR, ELEMENT_TYPE_ERROR, FILE_TYPE_ERROR } from '../shared/errors'
 import { getFileNameByNameAndExtension } from './utils/file-name'
 import { mapFileExtensionToMimeType } from './utils/file-type'
+import { DownloaderConfig } from './types/downloader-config'
 import { normalizeConfig } from './utils/config'
 import { IDownloader } from './downloader.interface'
 import { HTML_UTILS } from '../shared/utils/html'
-import { Config } from './types/config'
 
 export class Downloader implements IDownloader {
-  private config: Config
+  private config: DownloaderConfig
 
-  constructor(config: Partial<Config> = defaultConfig) {
+  constructor(config: Partial<DownloaderConfig> = defaultConfig) {
     this.config = normalizeConfig(config)
   }
 
@@ -54,12 +54,15 @@ export class Downloader implements IDownloader {
 
   private getFileName() {
     return getFileNameByNameAndExtension(this.config.fileName, this.config.fileType)
-  } 
+  }
 
   setFileName(fileName: string) {
     this.config.fileName = fileName
   }
   setFileType(fileType: FileType) {
     this.config.fileType = fileType
+  }
+  getConfig(): DownloaderConfig {
+    return ({ ...this.config })
   }
 }
