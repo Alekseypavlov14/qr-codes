@@ -45,6 +45,11 @@ You can use the `Printer` class to render the QR code
 
 ### Example:
 ```typescript
+const qrMatrix = QRCode.create({
+  message: 'Hello, QR Code!',
+  minimalErrorCorrection: 'M'
+})
+
 const printer = new Printer({
   lightColor: '#FFFFFF',
   darkColor: '#000000',
@@ -65,12 +70,27 @@ The `Downloader` class allows you to download QR codes as image files in various
 
 ### Example:
 ```typescript
-const downloader = new Downloader({
-  fileName: 'my-qr-code',
-  fileType: fileTypePNG
+const qrMatrix = QRCode.create({
+  message: 'Hello, QR Code!',
+  minimalErrorCorrection: 'M' // or use ERROR_CORRECTION_M from this package
 })
 
-downloader.downloadFromCanvas(canvasElement)
+const printer = new Printer({
+  lightColor: '#FFFFFF',
+  darkColor: '#000000',
+  output: 'canvas' // or use canvasEngine from this package
+})
+
+const downloader = new Downloader({
+  fileName: 'my-qr-code',
+  fileType: 'png' // or use fileTypePNG
+})
+
+// create a canvas containing QR Code
+const canvasElement = printer.print(qrCodeMatrix)
+
+// download canvas as PNG
+downloader.download(canvasElement)
 ```
 
 [See Configuration Options](#configuration-options)
@@ -88,8 +108,8 @@ downloader.downloadFromCanvas(canvasElement)
 | `minimalErrorCorrection` | `ErrorCorrection` | (Optional) Error correction level (`L`, `M`, `Q`, `H`). |
 
 ### Injection options
-- `getInjectorBySelector(selector: string)` - returns injection callback by selector
-- `getInjectorByElement(element: HTMLElement)` - returns injection callback by element
+- `getInjectorBySelector(selector: string)` - returns injection callback by selector (created element will fill container)
+- `getInjectorByElement(element: HTMLElement)` - returns injection callback by element (created element will fill container)
 - `injectContent<T extends HTMLElement>(container: T, content: QRCodeContent): void` - injects QR Code content to specified container (fills container)
 - `injectElement<C extends HTMLElement, E extends Element>(container: C, element: E): void` - injects Graphic Element (Canvas or SVG) to container (fills container)
 - `print<T extends Element>(content: QRCodeContent, size?: number): T` - creates Graphic Element (Canvas or SVG) with given size
@@ -111,10 +131,11 @@ downloader.downloadFromCanvas(canvasElement)
 | `fileType`    | `FileType`| The file format (e.g., `png`, `jpeg`, `webp`).|
 
 ### Download options
-- `downloadFromCanvas(canvas: HTMLCanvasElement): void`
-- `downloadFromCanvasContainer(container: HTMLElement): void`
-- `downloadFromSVG(svg: SVGSVGElement): void`
-- `downloadFromSVGContainer(container: HTMLElement): void`
+- `download<T extends Element>(element: T): void` - downloads image from given element (considering fileType)
+- `downloadFromCanvas(canvas: HTMLCanvasElement): void` - downloads image from canvas
+- `downloadFromCanvasContainer(container: HTMLElement): void` - downloads image from element that contains canvas
+- `downloadFromSVG(svg: SVGSVGElement): void` - downloads image from svg
+- `downloadFromSVGContainer(container: HTMLElement): void` - downloads image from element that contains svg
 
 ---
 
@@ -124,6 +145,7 @@ downloader.downloadFromCanvas(canvasElement)
 - `fileTypePNG`
 - `fileTypeJPEG`
 - `fileTypeWebp`
+- `fileTypeSVG`
 
 ### Designs (for rendering)
 - `designClassic`
@@ -136,4 +158,8 @@ downloader.downloadFromCanvas(canvasElement)
 - `canvasEngine`
 - `svgEngine`
 
----
+### Error Correction Levels
+- `ERROR_CORRECTION_L`
+- `ERROR_CORRECTION_M`
+- `ERROR_CORRECTION_Q`
+- `ERROR_CORRECTION_H`
