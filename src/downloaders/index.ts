@@ -4,5 +4,6 @@ export * from './downloader'
 export {
   fileTypePNG,
   fileTypeJPEG,
-  fileTypeWebp
+  fileTypeWebp,
+  fileTypeSVG
 } from './constants'
